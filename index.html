@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="blue">
     <meta name="apple-mobile-web-app-title" content="FinanceManager">
     <link rel="apple-touch-icon" href="GestaoFinanceiraOrganizada.png">
-    
     <title>FinanceManager - Controle Financeiro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -110,10 +108,10 @@
     <div class="lg:ml-64 min-h-screen">
         <!-- Header -->
         <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-            <div class="px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <h2 id="page-title" class="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h2>
-                    <div class="flex items-center space-x-4">
+            <div class="px-4 sm:px-6 py-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <h2 id="page-title" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-0">Dashboard</h2>
+                    <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                         <span id="current-month" class="text-sm text-gray-500 dark:text-gray-400"></span>
                         <div class="bg-finance-green-100 dark:bg-finance-green-900 text-finance-green-800 dark:text-finance-green-200 px-3 py-1 rounded-full text-sm font-medium">
                             <i class="fas fa-wallet mr-1"></i>
@@ -125,7 +123,7 @@
         </header>
 
         <!-- Dashboard Page -->
-        <div id="dashboard-page" class="page p-6">
+        <div id="dashboard-page" class="page p-4 sm:p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <!-- Cards de Resumo -->
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
@@ -177,23 +175,27 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
                 <!-- Gráfico de Despesas por Categoria -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Despesas por Categoria</h3>
-                    <canvas id="expenses-chart" width="400" height="300"></canvas>
+                    <div class="relative h-64 sm:h-80">
+                        <canvas id="expenses-chart"></canvas>
+                    </div>
                 </div>
 
                 <!-- Gráfico de Evolução Mensal -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Evolução Mensal</h3>
-                    <canvas id="monthly-chart" width="400" height="300"></canvas>
+                    <div class="relative h-64 sm:h-80">
+                        <canvas id="monthly-chart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Add Expense Page -->
-        <div id="add-expense-page" class="page p-6 hidden">
+        <div id="add-expense-page" class="page p-4 sm:p-6 hidden">
             <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg card-shadow p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Adicionar Nova Despesa</h3>
                 <form id="expense-form">
@@ -231,7 +233,7 @@
         </div>
 
         <!-- Add Income Page -->
-        <div id="add-income-page" class="page p-6 hidden">
+        <div id="add-income-page" class="page p-4 sm:p-6 hidden">
             <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg card-shadow p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Adicionar Nova Receita</h3>
                 <form id="income-form">
@@ -267,7 +269,7 @@
         </div>
 
         <!-- Expenses List Page -->
-        <div id="expenses-page" class="page p-6 hidden">
+        <div id="expenses-page" class="page p-4 sm:p-6 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg card-shadow">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -314,7 +316,7 @@
         </div>
 
         <!-- Reports Page -->
-        <div id="reports-page" class="page p-6 hidden">
+        <div id="reports-page" class="page p-4 sm:p-6 hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Relatório Mensal</h3>
@@ -346,7 +348,7 @@
         </div>
 
         <!-- Settings Page -->
-        <div id="settings-page" class="page p-6 hidden">
+        <div id="settings-page" class="page p-4 sm:p-6 hidden">
             <div class="max-w-2xl mx-auto space-y-6">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Configurações da Conta</h3>
