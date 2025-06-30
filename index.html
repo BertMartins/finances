@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -39,26 +40,28 @@
             background-color: rgb(24 24 27 / var(--tw-bg-opacity));
             color: rgb(244 244 245);
         }
-        
+
         .logo-text {
             background: linear-gradient(135deg, #22c55e, #16a34a);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .card-shadow {
             box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.1), 0 2px 4px -1px rgba(34, 197, 94, 0.06);
         }
-        
+
         .dark .card-shadow {
             box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.2), 0 2px 4px -1px rgba(34, 197, 94, 0.1);
         }
     </style>
 </head>
+
 <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-50">
+    <div id="sidebar"
+        class="fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-50">
         <div class="p-6 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 bg-finance-green-500 rounded-lg flex items-center justify-center">
@@ -70,29 +73,35 @@
                 </div>
             </div>
         </div>
-        
+
         <nav class="mt-6">
-            <a href="#" onclick="showPage('dashboard')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400 active">
+            <a href="#" onclick="showPage('dashboard')"
+                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400 active">
                 <i class="fas fa-chart-pie mr-3"></i>
                 Dashboard
             </a>
-            <a href="#" onclick="showPage('add-expense')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+            <a href="#" onclick="showPage('add-expense')"
+                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
                 <i class="fas fa-minus-circle mr-3"></i>
                 Adicionar Despesa
             </a>
-            <a href="#" onclick="showPage('add-income')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+            <a href="#" onclick="showPage('add-income')"
+                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
                 <i class="fas fa-plus-circle mr-3"></i>
                 Adicionar Receita
             </a>
-            <a href="#" onclick="showPage('expenses')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+            <a href="#" onclick="showPage('expenses')"
+                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
                 <i class="fas fa-list mr-3"></i>
                 Ver Despesas
             </a>
-            <a href="#" onclick="showPage('reports')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+            <a href="#" onclick="showPage('reports')"
+                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
                 <i class="fas fa-chart-bar mr-3"></i>
                 Relatórios
             </a>
-            <a href="#" onclick="showPage('settings')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+            <a href="#" onclick="showPage('settings')"
+                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
                 <i class="fas fa-cog mr-3"></i>
                 Configurações
             </a>
@@ -100,7 +109,8 @@
     </div>
 
     <!-- Mobile Menu Button -->
-    <button id="mobile-menu-btn" class="lg:hidden fixed top-4 left-4 z-50 bg-finance-green-500 text-white p-2 rounded-lg">
+    <button id="mobile-menu-btn"
+        class="lg:hidden fixed top-4 left-4 z-50 bg-finance-green-500 text-white p-2 rounded-lg">
         <i class="fas fa-bars"></i>
     </button>
 
@@ -110,10 +120,12 @@
         <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
             <div class="px-4 sm:px-6 py-4">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <h2 id="page-title" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-0">Dashboard</h2>
+                    <h2 id="page-title"
+                        class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-0">Dashboard</h2>
                     <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                         <span id="current-month" class="text-sm text-gray-500 dark:text-gray-400"></span>
-                        <div class="bg-finance-green-100 dark:bg-finance-green-900 text-finance-green-800 dark:text-finance-green-200 px-3 py-1 rounded-full text-sm font-medium">
+                        <div
+                            class="bg-finance-green-100 dark:bg-finance-green-900 text-finance-green-800 dark:text-finance-green-200 px-3 py-1 rounded-full text-sm font-medium">
                             <i class="fas fa-wallet mr-1"></i>
                             <span id="total-balance">R$ 0,00</span>
                         </div>
@@ -201,11 +213,15 @@
                 <form id="expense-form">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor</label>
-                        <input type="number" step="0.01" id="expense-amount" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" required>
+                        <input type="number" step="0.01" id="expense-amount"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoria</label>
-                        <select id="expense-category" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" required>
+                        <select id="expense-category"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            required>
                             <option value="">Selecione uma categoria</option>
                             <option value="alimentacao">Alimentação</option>
                             <option value="transporte">Transporte</option>
@@ -218,13 +234,18 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data</label>
-                        <input type="date" id="expense-date" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" required>
+                        <input type="date" id="expense-date"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            required>
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Descrição</label>
-                        <textarea id="expense-description" rows="3" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" placeholder="Descrição da despesa..."></textarea>
+                        <textarea id="expense-description" rows="3"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            placeholder="Descrição da despesa..."></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
+                    <button type="submit"
+                        class="w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
                         <i class="fas fa-plus mr-2"></i>
                         Adicionar Despesa
                     </button>
@@ -239,11 +260,15 @@
                 <form id="income-form">
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor</label>
-                        <input type="number" step="0.01" id="income-amount" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" required>
+                        <input type="number" step="0.01" id="income-amount"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            required>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo</label>
-                        <select id="income-type" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" required>
+                        <select id="income-type"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            required>
                             <option value="">Selecione o tipo</option>
                             <option value="salario">Salário</option>
                             <option value="freelance">Freelance</option>
@@ -254,13 +279,18 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data</label>
-                        <input type="date" id="income-date" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" required>
+                        <input type="date" id="income-date"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            required>
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Descrição</label>
-                        <textarea id="income-description" rows="3" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" placeholder="Descrição da receita..."></textarea>
+                        <textarea id="income-description" rows="3"
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                            placeholder="Descrição da receita..."></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
+                    <button type="submit"
+                        class="w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
                         <i class="fas fa-plus mr-2"></i>
                         Adicionar Receita
                     </button>
@@ -275,7 +305,8 @@
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Todas as Transações</h3>
                         <div class="mt-4 sm:mt-0 flex space-x-2">
-                            <select id="filter-category" class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
+                            <select id="filter-category"
+                                class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
                                 <option value="">Todas as categorias</option>
                                 <option value="alimentacao">Alimentação</option>
                                 <option value="transporte">Transporte</option>
@@ -289,7 +320,8 @@
                                 <option value="bonus">Bônus</option>
                                 <option value="outros">Outros</option>
                             </select>
-                            <select id="filter-type" class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
+                            <select id="filter-type"
+                                class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
                                 <option value="">Todos os tipos</option>
                                 <option value="income">Receitas</option>
                                 <option value="expense">Despesas</option>
@@ -301,14 +333,25 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Data</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Descrição</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Categoria</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Valor</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ações</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Data</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Descrição</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Categoria</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Valor</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="transactions-list" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody id="transactions-list"
+                            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         </tbody>
                     </table>
                 </div>
@@ -334,7 +377,8 @@
                             <span id="report-balance" class="font-semibold text-finance-green-600">R$ 0,00</span>
                         </div>
                     </div>
-                    <button onclick="exportReport()" class="mt-6 w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
+                    <button onclick="exportReport()"
+                        class="mt-6 w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
                         <i class="fas fa-download mr-2"></i>
                         Exportar Relatório
                     </button>
@@ -355,13 +399,19 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nome</label>
-                            <input type="text" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" value="Usuário">
+                            <input type="text"
+                                class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                                value="Usuário">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">E-mail</label>
-                            <input type="email" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white" value="usuario@email.com">
+                            <label
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">E-mail</label>
+                            <input type="email"
+                                class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                                value="usuario@email.com">
                         </div>
-                        <button class="bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
+                        <button
+                            class="bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
                             Salvar Alterações
                         </button>
                     </div>
@@ -370,571 +420,30 @@
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Categorias Personalizadas</h3>
                     <div class="space-y-2">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">As categorias padrão são: Alimentação, Transporte, Moradia, Saúde, Educação, Lazer e Outros.</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Em uma versão futura, você poderá adicionar categorias personalizadas.</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">As categorias padrão são: Alimentação,
+                            Transporte, Moradia, Saúde, Educação, Lazer e Outros.</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Em uma versão futura, você poderá adicionar
+                            categorias personalizadas.</p>
                     </div>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dados</h3>
                     <div class="space-y-4">
-                        <button onclick="clearAllData()" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200">
+                        <button onclick="clearAllData()"
+                            class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200">
                             <i class="fas fa-trash mr-2"></i>
                             Limpar Todos os Dados
                         </button>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Esta ação removerá todas as transações registradas.</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Esta ação removerá todas as transações
+                            registradas.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Dark mode detection
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (event.matches) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        });
-
-        // Data storage (in memory since localStorage is not available)
-        let transactions = [];
-        let nextId = 1;
-
-        // Page navigation
-        function showPage(pageId) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.add('hidden');
-            });
-            
-            // Show selected page
-            document.getElementById(pageId + '-page').classList.remove('hidden');
-            
-            // Update page title
-            const titles = {
-                'dashboard': 'Dashboard',
-                'add-expense': 'Adicionar Despesa',
-                'add-income': 'Adicionar Receita',
-                'expenses': 'Visualizar Transações',
-                'reports': 'Relatórios',
-                'settings': 'Configurações'
-            };
-            document.getElementById('page-title').textContent = titles[pageId];
-            
-            // Update active nav item
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active', 'bg-finance-green-50', 'dark:bg-finance-green-900', 'text-finance-green-600', 'dark:text-finance-green-400');
-            });
-            event.target.classList.add('active', 'bg-finance-green-50', 'dark:bg-finance-green-900', 'text-finance-green-600', 'dark:text-finance-green-400');
-            
-            // Refresh data if needed
-            if (pageId === 'dashboard') {
-                updateDashboard();
-            } else if (pageId === 'expenses') {
-                updateTransactionsList();
-            } else if (pageId === 'reports') {
-                updateReports();
-            }
-        }
-
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('-translate-x-full');
-        });
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            
-            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
-                sidebar.classList.add('-translate-x-full');
-            }
-        });
-
-        // Form submissions
-        document.getElementById('expense-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const expense = {
-                id: nextId++,
-                type: 'expense',
-                amount: parseFloat(document.getElementById('expense-amount').value),
-                category: document.getElementById('expense-category').value,
-                date: document.getElementById('expense-date').value,
-                description: document.getElementById('expense-description').value || 'Despesa'
-            };
-            
-            transactions.push(expense);
-            this.reset();
-            
-            // Show success message
-            alert('Despesa adicionada com sucesso!');
-            
-            // Go to dashboard
-            showPage('dashboard');
-        });
-
-        document.getElementById('income-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const income = {
-                id: nextId++,
-                type: 'income',
-                amount: parseFloat(document.getElementById('income-amount').value),
-                category: document.getElementById('income-type').value,
-                date: document.getElementById('income-date').value,
-                description: document.getElementById('income-description').value || 'Receita'
-            };
-            
-            transactions.push(income);
-            this.reset();
-            
-            // Show success message
-            alert('Receita adicionada com sucesso!');
-            
-            // Go to dashboard
-            showPage('dashboard');
-        });
-
-        // Set default dates to today
-        function setDefaultDates() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('expense-date').value = today;
-            document.getElementById('income-date').value = today;
-        }
-
-        // Format currency
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(amount);
-        }
-
-        // Update dashboard
-        function updateDashboard() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            
-            // Update current month display
-            document.getElementById('current-month').textContent = 
-                now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-            
-            // Filter transactions for current month
-            const monthlyTransactions = transactions.filter(t => {
-                const tDate = new Date(t.date);
-                return tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
-            });
-            
-            const monthlyIncome = monthlyTransactions
-                .filter(t => t.type === 'income')
-                .reduce((sum, t) => sum + t.amount, 0);
-                
-            const monthlyExpenses = monthlyTransactions
-                .filter(t => t.type === 'expense')
-                .reduce((sum, t) => sum + t.amount, 0);
-                
-            const monthlyBalance = monthlyIncome - monthlyExpenses;
-            
-            // Update cards
-            document.getElementById('monthly-income').textContent = formatCurrency(monthlyIncome);
-            document.getElementById('monthly-expenses').textContent = formatCurrency(monthlyExpenses);
-            document.getElementById('monthly-balance').textContent = formatCurrency(monthlyBalance);
-            document.getElementById('total-balance').textContent = formatCurrency(monthlyBalance);
-            document.getElementById('total-transactions').textContent = monthlyTransactions.length;
-            
-            // Update balance color
-            const balanceElement = document.getElementById('monthly-balance');
-            if (monthlyBalance >= 0) {
-                balanceElement.className = 'text-2xl font-bold text-finance-green-600';
-            } else {
-                balanceElement.className = 'text-2xl font-bold text-red-600';
-            }
-            
-            // Update charts
-            updateExpensesChart(monthlyTransactions);
-            updateMonthlyChart();
-        }
-
-        // Update expenses chart
-        function updateExpensesChart(monthlyTransactions) {
-            const ctx = document.getElementById('expenses-chart').getContext('2d');
-            
-            // Destroy existing chart if it exists
-            if (window.expensesChart) {
-                window.expensesChart.destroy();
-            }
-            
-            const expenses = monthlyTransactions.filter(t => t.type === 'expense');
-            const categoryTotals = {};
-            
-            expenses.forEach(expense => {
-                categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
-            });
-            
-            const labels = Object.keys(categoryTotals);
-            const data = Object.values(categoryTotals);
-            const colors = [
-                '#22c55e', '#ef4444', '#3b82f6', '#f59e0b', 
-                '#8b5cf6', '#ec4899', '#10b981', '#f97316'
-            ];
-            
-            window.expensesChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels.map(label => {
-                        const categoryNames = {
-                            'alimentacao': 'Alimentação',
-                            'transporte': 'Transporte',
-                            'moradia': 'Moradia',
-                            'saude': 'Saúde',
-                            'educacao': 'Educação',
-                            'lazer': 'Lazer',
-                            'outros': 'Outros'
-                        };
-                        return categoryNames[label] || label;
-                    }),
-                    datasets: [{
-                        data: data,
-                        backgroundColor: colors.slice(0, labels.length),
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Update monthly chart
-        function updateMonthlyChart() {
-            const ctx = document.getElementById('monthly-chart').getContext('2d');
-            
-            // Destroy existing chart if it exists
-            if (window.monthlyChart) {
-                window.monthlyChart.destroy();
-            }
-            
-            // Get last 6 months of data
-            const months = [];
-            const incomeData = [];
-            const expenseData = [];
-            
-            for (let i = 5; i >= 0; i--) {
-                const date = new Date();
-                date.setMonth(date.getMonth() - i);
-                
-                const month = date.getMonth();
-                const year = date.getFullYear();
-                
-                months.push(date.toLocaleDateString('pt-BR', { month: 'short' }));
-                
-                const monthTransactions = transactions.filter(t => {
-                    const tDate = new Date(t.date);
-                    return tDate.getMonth() === month && tDate.getFullYear() === year;
-                });
-                
-                const income = monthTransactions
-                    .filter(t => t.type === 'income')
-                    .reduce((sum, t) => sum + t.amount, 0);
-                    
-                const expenses = monthTransactions
-                    .filter(t => t.type === 'expense')
-                    .reduce((sum, t) => sum + t.amount, 0);
-                
-                incomeData.push(income);
-                expenseData.push(expenses);
-            }
-            
-            window.monthlyChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: months,
-                    datasets: [
-                        {
-                            label: 'Receitas',
-                            data: incomeData,
-                            borderColor: '#22c55e',
-                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                            tension: 0.4
-                        },
-                        {
-                            label: 'Despesas',
-                            data: expenseData,
-                            borderColor: '#ef4444',
-                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151',
-                                callback: function(value) {
-                                    return formatCurrency(value);
-                                }
-                            },
-                            grid: {
-                                color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#374151'
-                            },
-                            grid: {
-                                color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Update transactions list
-        function updateTransactionsList() {
-            const tbody = document.getElementById('transactions-list');
-            const categoryFilter = document.getElementById('filter-category').value;
-            const typeFilter = document.getElementById('filter-type').value;
-            
-            let filteredTransactions = transactions;
-            
-            if (categoryFilter) {
-                filteredTransactions = filteredTransactions.filter(t => t.category === categoryFilter);
-            }
-            
-            if (typeFilter) {
-                filteredTransactions = filteredTransactions.filter(t => t.type === typeFilter);
-            }
-            
-            // Sort by date (newest first)
-            filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            tbody.innerHTML = '';
-            
-            filteredTransactions.forEach(transaction => {
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-gray-50 dark:hover:bg-gray-700';
-                
-                const categoryNames = {
-                    'alimentacao': 'Alimentação',
-                    'transporte': 'Transporte',
-                    'moradia': 'Moradia',
-                    'saude': 'Saúde',
-                    'educacao': 'Educação',
-                    'lazer': 'Lazer',
-                    'salario': 'Salário',
-                    'freelance': 'Freelance',
-                    'investimento': 'Investimento',
-                    'bonus': 'Bônus',
-                    'outros': 'Outros'
-                };
-                
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        ${new Date(transaction.date).toLocaleDateString('pt-BR')}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                        ${transaction.description}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                        ${categoryNames[transaction.category] || transaction.category}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium ${transaction.type === 'income' ? 'text-finance-green-600' : 'text-red-600'}">
-                        ${transaction.type === 'income' ? '+' : '-'} ${formatCurrency(transaction.amount)}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <button onclick="deleteTransaction(${transaction.id})" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
-
-        // Delete transaction
-        function deleteTransaction(id) {
-            if (confirm('Tem certeza que deseja excluir esta transação?')) {
-                transactions = transactions.filter(t => t.id !== id);
-                updateTransactionsList();
-                updateDashboard();
-            }
-        }
-
-        // Update reports
-        function updateReports() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            
-            const monthlyTransactions = transactions.filter(t => {
-                const tDate = new Date(t.date);
-                return tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
-            });
-            
-            const totalIncome = monthlyTransactions
-                .filter(t => t.type === 'income')
-                .reduce((sum, t) => sum + t.amount, 0);
-                
-            const totalExpenses = monthlyTransactions
-                .filter(t => t.type === 'expense')
-                .reduce((sum, t) => sum + t.amount, 0);
-                
-            const balance = totalIncome - totalExpenses;
-            
-            document.getElementById('report-total-income').textContent = formatCurrency(totalIncome);
-            document.getElementById('report-total-expenses').textContent = formatCurrency(totalExpenses);
-            document.getElementById('report-balance').textContent = formatCurrency(balance);
-            
-            // Update category breakdown
-            const expenses = monthlyTransactions.filter(t => t.type === 'expense');
-            const categoryTotals = {};
-            
-            expenses.forEach(expense => {
-                categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
-            });
-            
-            const categoryBreakdown = document.getElementById('category-breakdown');
-            categoryBreakdown.innerHTML = '';
-            
-            const categoryNames = {
-                'alimentacao': 'Alimentação',
-                'transporte': 'Transporte',
-                'moradia': 'Moradia',
-                'saude': 'Saúde',
-                'educacao': 'Educação',
-                'lazer': 'Lazer',
-                'outros': 'Outros'
-            };
-            
-            Object.entries(categoryTotals).forEach(([category, amount]) => {
-                const percentage = totalExpenses > 0 ? (amount / totalExpenses * 100).toFixed(1) : 0;
-                
-                const div = document.createElement('div');
-                div.className = 'flex justify-between items-center py-2';
-                div.innerHTML = `
-                    <span class="text-gray-600 dark:text-gray-400">${categoryNames[category] || category}:</span>
-                    <div class="text-right">
-                        <span class="font-semibold text-gray-900 dark:text-white">${formatCurrency(amount)}</span>
-                        <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">(${percentage}%)</span>
-                    </div>
-                `;
-                categoryBreakdown.appendChild(div);
-            });
-        }
-
-        // Export report
-        function exportReport() {
-            const now = new Date();
-            const monthYear = now.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-            
-            const reportContent = `
-RELATÓRIO FINANCEIRO - ${monthYear.toUpperCase()}
-
-Total de Receitas: ${document.getElementById('report-total-income').textContent}
-Total de Despesas: ${document.getElementById('report-total-expenses').textContent}
-Saldo: ${document.getElementById('report-balance').textContent}
-
-DETALHAMENTO POR CATEGORIA:
-${document.getElementById('category-breakdown').innerText}
-
-Gerado em: ${new Date().toLocaleString('pt-BR')}
-            `;
-            
-            const blob = new Blob([reportContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `relatorio-financeiro-${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}.txt`;
-            a.click();
-            
-            URL.revokeObjectURL(url);
-        }
-
-        // Clear all data
-        function clearAllData() {
-            if (confirm('Tem certeza que deseja limpar todos os dados? Esta ação não pode ser desfeita.')) {
-                transactions = [];
-                nextId = 1;
-                updateDashboard();
-                updateTransactionsList();
-                updateReports();
-                alert('Todos os dados foram removidos com sucesso!');
-            }
-        }
-
-        // Filter listeners
-        document.getElementById('filter-category').addEventListener('change', updateTransactionsList);
-        document.getElementById('filter-type').addEventListener('change', updateTransactionsList);
-
-        // Initialize app
-        setDefaultDates();
-        updateDashboard();
-        
-        // Add some sample data for demonstration
-        const sampleTransactions = [
-            {
-                id: nextId++,
-                type: 'income',
-                amount: 5000,
-                category: 'salario',
-                date: new Date().toISOString().split('T')[0],
-                description: 'Salário mensal'
-            },
-            {
-                id: nextId++,
-                type: 'expense',
-                amount: 800,
-                category: 'alimentacao',
-                date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
-                description: 'Supermercado'
-            },
-            {
-                id: nextId++,
-                type: 'expense',
-                amount: 350,
-                category: 'transporte',
-                date: new Date(Date.now() - 172800000).toISOString().split('T')[0],
-                description: 'Combustível'
-            }
-        ];
-        
-        transactions.push(...sampleTransactions);
-        updateDashboard();
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
