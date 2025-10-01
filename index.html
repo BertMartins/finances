@@ -161,10 +161,13 @@
                                 <option value="11">Dezembro</option>
                             </select>
                             <select id="dashboard-year" class="border rounded p-2 dark:bg-gray-800 dark:text-white text-base">
-                                <option value="2023">2023</option>
                                 <option value="2024">2024</option>
-                                <option value="2025" selected>2025</option>
+                                <option value="2025">2025</option>
                                 <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
                             </select>
                         </div>
                         <div class="flex items-center gap-3">
@@ -260,9 +263,6 @@
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Meta de Gastos Mensais</h3>
-                    <button onclick="setSpendingGoal()" class="mt-2 sm:mt-0 bg-finance-green-500 text-white px-4 py-2 rounded-lg hover:bg-finance-green-600 transition-colors">
-                        <i class="fas fa-target mr-2"></i>Definir Meta
-                    </button>
                 </div>
                 <div id="spending-goal-section">
                     <div class="bg-gray-100 dark:bg-gray-700 rounded-lg h-4 mb-2">
@@ -467,11 +467,6 @@
                             <span id="report-biggest-income" class="font-semibold text-finance-green-600">R$ 0,00</span>
                         </div>
                     </div>
-                    <button onclick="exportReport()"
-                        class="mt-6 w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
-                        <i class="fas fa-download mr-2"></i>
-                        Exportar Relatório (CSV)
-                    </button>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
@@ -553,11 +548,6 @@
                                 <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
                             </label>
                         </div>
-                        <button onclick="clearAllData()"
-                            class="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200">
-                            <i class="fas fa-trash mr-2"></i>
-                            Limpar Todos os Dados
-                        </button>
                         <p class="text-sm text-gray-600 dark:text-gray-400">
                             <i class="fas fa-info-circle mr-1"></i>
                             Os dados são armazenados localmente no seu navegador. Faça backup regularmente.
