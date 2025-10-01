@@ -2,12 +2,10 @@
 <html lang="pt-BR">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="blue">
     <meta name="apple-mobile-web-app-title" content="FinanceManager">
-    <link rel="apple-touch-icon" href="GestaoFinanceiraOrganizada.png">
     <title>FinanceManager - Controle Financeiro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -55,6 +53,34 @@
         .dark .card-shadow {
             box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.2), 0 2px 4px -1px rgba(34, 197, 94, 0.1);
         }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-up {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .pulse-success {
+            animation: pulseSuccess 0.6s ease-in-out;
+        }
+
+        @keyframes pulseSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 
@@ -73,61 +99,83 @@
                 </div>
             </div>
         </div>
-
         <nav class="mt-6">
-            <a href="#" onclick="showPage('dashboard')"
-                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400 active">
-                <i class="fas fa-chart-pie mr-3"></i>
-                Dashboard
+            <a href="#" onclick="showPage('dashboard')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400 active">
+                <i class="fas fa-chart-pie mr-3"></i>Dashboard
             </a>
-            <a href="#" onclick="showPage('add-expense')"
-                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
-                <i class="fas fa-minus-circle mr-3"></i>
-                Adicionar Despesa
+            <a href="#" onclick="showPage('add-expense')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+                <i class="fas fa-minus-circle mr-3"></i>Adicionar Despesa
             </a>
-            <a href="#" onclick="showPage('add-income')"
-                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
-                <i class="fas fa-plus-circle mr-3"></i>
-                Adicionar Receita
+            <a href="#" onclick="showPage('add-income')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+                <i class="fas fa-plus-circle mr-3"></i>Adicionar Receita
             </a>
-            <a href="#" onclick="showPage('expenses')"
-                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
-                <i class="fas fa-list mr-3"></i>
-                Ver Despesas
+            <a href="#" onclick="showPage('expenses')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+                <i class="fas fa-list mr-3"></i>Ver Transações
             </a>
-            <a href="#" onclick="showPage('reports')"
-                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
-                <i class="fas fa-chart-bar mr-3"></i>
-                Relatórios
+            <a href="#" onclick="showPage('reports')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+                <i class="fas fa-chart-bar mr-3"></i>Relatórios
             </a>
-            <a href="#" onclick="showPage('settings')"
-                class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
-                <i class="fas fa-cog mr-3"></i>
-                Configurações
+            <a href="#" onclick="showPage('settings')" class="nav-item flex items-center px-6 py-3 text-gray-700 dark:text-gray-300 hover:bg-finance-green-50 dark:hover:bg-finance-green-900 hover:text-finance-green-600 dark:hover:text-finance-green-400">
+                <i class="fas fa-cog mr-3"></i>Configurações
             </a>
         </nav>
     </div>
 
     <!-- Mobile Menu Button -->
-    <button id="mobile-menu-btn"
-        class="lg:hidden fixed top-4 left-4 z-50 bg-finance-green-500 text-white p-2 rounded-lg">
+    <button id="mobile-menu-btn" class="lg:hidden fixed top-4 left-4 z-50 bg-finance-green-500 text-white p-2 rounded-lg shadow-lg">
         <i class="fas fa-bars"></i>
     </button>
+
+    <!-- Help Button -->
+    <button id="help-btn" class="fixed bottom-6 right-6 z-40 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110">
+        <i class="fas fa-question text-lg"></i>
+    </button>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
 
     <!-- Main Content -->
     <div class="lg:ml-64 min-h-screen">
         <!-- Header -->
         <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
             <div class="px-4 sm:px-6 py-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <h2 id="page-title"
-                        class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-0">Dashboard</h2>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <h2 id="page-title" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-0">Dashboard</h2>
                     <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                        <span id="current-month" class="text-sm text-gray-500 dark:text-gray-400"></span>
-                        <div
-                            class="bg-finance-green-100 dark:bg-finance-green-900 text-finance-green-800 dark:text-finance-green-200 px-3 py-1 rounded-full text-sm font-medium">
-                            <i class="fas fa-wallet mr-1"></i>
-                            <span id="total-balance">R$ 0,00</span>
+                        <div class="flex items-center gap-2">
+                            <select id="dashboard-month" class="border rounded p-2 dark:bg-gray-800 dark:text-white text-base">
+                                <option value="0">Janeiro</option>
+                                <option value="1">Fevereiro</option>
+                                <option value="2">Março</option>
+                                <option value="3">Abril</option>
+                                <option value="4">Maio</option>
+                                <option value="5">Junho</option>
+                                <option value="6">Julho</option>
+                                <option value="7">Agosto</option>
+                                <option value="8">Setembro</option>
+                                <option value="9">Outubro</option>
+                                <option value="10">Novembro</option>
+                                <option value="11">Dezembro</option>
+                            </select>
+                            <select id="dashboard-year" class="border rounded p-2 dark:bg-gray-800 dark:text-white text-base">
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025" selected>2025</option>
+                                <option value="2026">2026</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span id="current-period">Janeiro 2025</span>
+                            </div>
+                            <div class="bg-finance-green-100 dark:bg-finance-green-900 text-finance-green-800 dark:text-finance-green-200 px-3 py-1 rounded-full text-sm font-medium">
+                                <i class="fas fa-wallet mr-1"></i>
+                                <span id="total-balance">R$ 0,00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,13 +184,14 @@
 
         <!-- Dashboard Page -->
         <div id="dashboard-page" class="page p-4 sm:p-6">
+            <!-- Cards de Resumo -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Cards de Resumo -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow hover:shadow-lg transition-shadow duration-300">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Receitas do Mês</p>
                             <p id="monthly-income" class="text-2xl font-bold text-finance-green-600">R$ 0,00</p>
+                            <p id="income-count" class="text-xs text-gray-500 dark:text-gray-400 mt-1">0 transações</p>
                         </div>
                         <div class="bg-finance-green-100 dark:bg-finance-green-900 p-3 rounded-lg">
                             <i class="fas fa-arrow-up text-finance-green-600 dark:text-finance-green-400"></i>
@@ -150,11 +199,12 @@
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow hover:shadow-lg transition-shadow duration-300">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Despesas do Mês</p>
                             <p id="monthly-expenses" class="text-2xl font-bold text-red-600">R$ 0,00</p>
+                            <p id="expense-count" class="text-xs text-gray-500 dark:text-gray-400 mt-1">0 transações</p>
                         </div>
                         <div class="bg-red-100 dark:bg-red-900 p-3 rounded-lg">
                             <i class="fas fa-arrow-down text-red-600 dark:text-red-400"></i>
@@ -162,11 +212,12 @@
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow hover:shadow-lg transition-shadow duration-300">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Saldo do Mês</p>
                             <p id="monthly-balance" class="text-2xl font-bold text-finance-green-600">R$ 0,00</p>
+                            <p id="balance-percentage" class="text-xs text-gray-500 dark:text-gray-400 mt-1">100% das receitas</p>
                         </div>
                         <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg">
                             <i class="fas fa-balance-scale text-blue-600 dark:text-blue-400"></i>
@@ -174,21 +225,22 @@
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow hover:shadow-lg transition-shadow duration-300">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Transações</p>
-                            <p id="total-transactions" class="text-2xl font-bold text-gray-900 dark:text-white">0</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Média Diária</p>
+                            <p id="daily-average" class="text-2xl font-bold text-gray-900 dark:text-white">R$ 0,00</p>
+                            <p id="daily-info" class="text-xs text-gray-500 dark:text-gray-400 mt-1">Gastos por dia</p>
                         </div>
                         <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                            <i class="fas fa-exchange-alt text-gray-600 dark:text-gray-400"></i>
+                            <i class="fas fa-calendar-day text-gray-600 dark:text-gray-400"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                <!-- Gráfico de Despesas por Categoria -->
+            <!-- Gráficos -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
                 <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Despesas por Categoria</h3>
                     <div class="relative h-64 sm:h-80">
@@ -196,11 +248,29 @@
                     </div>
                 </div>
 
-                <!-- Gráfico de Evolução Mensal -->
                 <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Evolução Mensal</h3>
                     <div class="relative h-64 sm:h-80">
                         <canvas id="monthly-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meta de Gastos -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Meta de Gastos Mensais</h3>
+                    <button onclick="setSpendingGoal()" class="mt-2 sm:mt-0 bg-finance-green-500 text-white px-4 py-2 rounded-lg hover:bg-finance-green-600 transition-colors">
+                        <i class="fas fa-target mr-2"></i>Definir Meta
+                    </button>
+                </div>
+                <div id="spending-goal-section">
+                    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg h-4 mb-2">
+                        <div id="spending-progress" class="bg-finance-green-500 h-4 rounded-lg transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                        <span id="spending-current">R$ 0 gastos</span>
+                        <span id="spending-target">Meta: R$ 0</span>
                     </div>
                 </div>
             </div>
@@ -212,40 +282,44 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Adicionar Nova Despesa</h3>
                 <form id="expense-form">
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor</label>
-                        <input type="number" step="0.01" id="expense-amount"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
-                            required>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor *</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-gray-500">R$</span>
+                            <input type="number" step="0.01" id="expense-amount" placeholder="0,00"
+                                class="w-full pl-8 pr-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                                required>
+                        </div>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoria</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Categoria *</label>
                         <select id="expense-category"
                             class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
                             required>
                             <option value="">Selecione uma categoria</option>
-                            <option value="alimentacao">Alimentação</option>
-                            <option value="transporte">Transporte</option>
-                            <option value="moradia">Moradia</option>
-                            <option value="saude">Saúde</option>
-                            <option value="educacao">Educação</option>
-                            <option value="lazer">Lazer</option>
-                            <option value="outros">Outros</option>
+                            <option value="alimentacao">🍽️ Alimentação</option>
+                            <option value="transporte">🚗 Transporte</option>
+                            <option value="moradia">🏠 Moradia</option>
+                            <option value="saude">🏥 Saúde</option>
+                            <option value="educacao">📚 Educação</option>
+                            <option value="lazer">🎮 Lazer</option>
+                            <option value="compras">🛍️ Compras</option>
+                            <option value="servicos">🔧 Serviços</option>
+                            <option value="outros">📦 Outros</option>
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data *</label>
                         <input type="date" id="expense-date"
                             class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
                             required>
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Descrição</label>
-                        <textarea id="expense-description" rows="3"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
-                            placeholder="Descrição da despesa..."></textarea>
+                        <textarea id="expense-description" rows="3" placeholder="Descrição da despesa..."
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"></textarea>
                     </div>
                     <button type="submit"
-                        class="w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
+                        class="w-full bg-finance-green-500 text-white py-3 px-4 rounded-lg hover:bg-finance-green-600 transition-all duration-200 transform hover:scale-105">
                         <i class="fas fa-plus mr-2"></i>
                         Adicionar Despesa
                     </button>
@@ -259,38 +333,41 @@
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Adicionar Nova Receita</h3>
                 <form id="income-form">
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor</label>
-                        <input type="number" step="0.01" id="income-amount"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
-                            required>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Valor *</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-gray-500">R$</span>
+                            <input type="number" step="0.01" id="income-amount" placeholder="0,00"
+                                class="w-full pl-8 pr-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
+                                required>
+                        </div>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tipo *</label>
                         <select id="income-type"
                             class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
                             required>
                             <option value="">Selecione o tipo</option>
-                            <option value="salario">Salário</option>
-                            <option value="freelance">Freelance</option>
-                            <option value="investimento">Investimento</option>
-                            <option value="bonus">Bônus</option>
-                            <option value="outros">Outros</option>
+                            <option value="salario">💼 Salário</option>
+                            <option value="freelance">💻 Freelance</option>
+                            <option value="investimento">📈 Investimento</option>
+                            <option value="bonus">🎁 Bônus</option>
+                            <option value="vendas">🛒 Vendas</option>
+                            <option value="outros">💰 Outros</option>
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data *</label>
                         <input type="date" id="income-date"
                             class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
                             required>
                     </div>
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Descrição</label>
-                        <textarea id="income-description" rows="3"
-                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
-                            placeholder="Descrição da receita..."></textarea>
+                        <textarea id="income-description" rows="3" placeholder="Descrição da receita..."
+                            class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"></textarea>
                     </div>
                     <button type="submit"
-                        class="w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
+                        class="w-full bg-finance-green-500 text-white py-3 px-4 rounded-lg hover:bg-finance-green-600 transition-all duration-200 transform hover:scale-105">
                         <i class="fas fa-plus mr-2"></i>
                         Adicionar Receita
                     </button>
@@ -302,29 +379,35 @@
         <div id="expenses-page" class="page p-4 sm:p-6 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg card-shadow">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Todas as Transações</h3>
-                        <div class="mt-4 sm:mt-0 flex space-x-2">
-                            <select id="filter-category"
-                                class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                <input type="text" id="search-transactions" placeholder="Buscar transações..."
+                                    class="pl-10 pr-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-finance-green-500">
+                            </div>
+                            <select id="filter-category" class="px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
                                 <option value="">Todas as categorias</option>
-                                <option value="alimentacao">Alimentação</option>
-                                <option value="transporte">Transporte</option>
-                                <option value="moradia">Moradia</option>
-                                <option value="saude">Saúde</option>
-                                <option value="educacao">Educação</option>
-                                <option value="lazer">Lazer</option>
-                                <option value="salario">Salário</option>
-                                <option value="freelance">Freelance</option>
-                                <option value="investimento">Investimento</option>
-                                <option value="bonus">Bônus</option>
-                                <option value="outros">Outros</option>
+                                <option value="alimentacao">🍽️ Alimentação</option>
+                                <option value="transporte">🚗 Transporte</option>
+                                <option value="moradia">🏠 Moradia</option>
+                                <option value="saude">🏥 Saúde</option>
+                                <option value="educacao">📚 Educação</option>
+                                <option value="lazer">🎮 Lazer</option>
+                                <option value="compras">🛍️ Compras</option>
+                                <option value="servicos">🔧 Serviços</option>
+                                <option value="salario">💼 Salário</option>
+                                <option value="freelance">💻 Freelance</option>
+                                <option value="investimento">📈 Investimento</option>
+                                <option value="bonus">🎁 Bônus</option>
+                                <option value="vendas">🛒 Vendas</option>
+                                <option value="outros">📦 Outros</option>
                             </select>
-                            <select id="filter-type"
-                                class="px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
+                            <select id="filter-type" class="px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white">
                                 <option value="">Todos os tipos</option>
-                                <option value="income">Receitas</option>
-                                <option value="expense">Despesas</option>
+                                <option value="income">💰 Receitas</option>
+                                <option value="expense">💸 Despesas</option>
                             </select>
                         </div>
                     </div>
@@ -333,60 +416,75 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 dark:bg-gray-700">
                             <tr>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    Data</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    Descrição</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    Categoria</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    Valor</th>
-                                <th
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                    Ações</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:text-finance-green-600" onclick="sortTransactions('date')">
+                                    Data <i class="fas fa-sort ml-1"></i>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Descrição</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:text-finance-green-600" onclick="sortTransactions('category')">
+                                    Categoria <i class="fas fa-sort ml-1"></i>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer hover:text-finance-green-600" onclick="sortTransactions('amount')">
+                                    Valor <i class="fas fa-sort ml-1"></i>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="transactions-list"
-                            class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody id="transactions-list" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         </tbody>
                     </table>
+                </div>
+                <div id="no-transactions" class="p-8 text-center text-gray-500 dark:text-gray-400 hidden">
+                    <i class="fas fa-search text-4xl mb-4"></i>
+                    <p>Nenhuma transação encontrada</p>
                 </div>
             </div>
         </div>
 
         <!-- Reports Page -->
         <div id="reports-page" class="page p-4 sm:p-6 hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Relatório Mensal</h3>
                     <div class="space-y-4">
-                        <div class="flex justify-between">
+                        <div class="flex justify-between items-center">
                             <span class="text-gray-600 dark:text-gray-400">Total de Receitas:</span>
                             <span id="report-total-income" class="font-semibold text-finance-green-600">R$ 0,00</span>
                         </div>
-                        <div class="flex justify-between">
+                        <div class="flex justify-between items-center">
                             <span class="text-gray-600 dark:text-gray-400">Total de Despesas:</span>
                             <span id="report-total-expenses" class="font-semibold text-red-600">R$ 0,00</span>
                         </div>
-                        <div class="flex justify-between border-t pt-4">
-                            <span class="text-gray-900 dark:text-white font-semibold">Saldo:</span>
+                        <div class="flex justify-between items-center border-t pt-4">
+                            <span class="text-gray-900 dark:text-white font-semibold">Saldo Final:</span>
                             <span id="report-balance" class="font-semibold text-finance-green-600">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Maior Despesa:</span>
+                            <span id="report-biggest-expense" class="font-semibold text-red-600">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 dark:text-gray-400">Maior Receita:</span>
+                            <span id="report-biggest-income" class="font-semibold text-finance-green-600">R$ 0,00</span>
                         </div>
                     </div>
                     <button onclick="exportReport()"
                         class="mt-6 w-full bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
                         <i class="fas fa-download mr-2"></i>
-                        Exportar Relatório
+                        Exportar Relatório (CSV)
                     </button>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Despesas por Categoria</h3>
-                    <div id="category-breakdown"></div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Análise por Categoria</h3>
+                    <div id="category-breakdown" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- Gráfico de Comparação Anual -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Comparação Anual</h3>
+                <div class="relative h-80">
+                    <canvas id="yearly-chart"></canvas>
                 </div>
             </div>
         </div>
@@ -399,44 +497,71 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nome</label>
-                            <input type="text"
+                            <input type="text" id="user-name"
                                 class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
                                 value="Usuário">
                         </div>
                         <div>
-                            <label
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">E-mail</label>
-                            <input type="email"
-                                class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white"
-                                value="usuario@email.com">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Meta de Gastos Mensais</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-500">R$</span>
+                                <input type="number" step="0.01" id="monthly-goal" placeholder="0,00"
+                                    class="w-full pl-8 pr-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-finance-green-500 focus:border-finance-green-500 dark:bg-gray-700 dark:text-white">
+                            </div>
                         </div>
-                        <button
+                        <button onclick="saveSettings()"
                             class="bg-finance-green-500 text-white py-2 px-4 rounded-lg hover:bg-finance-green-600 transition-colors duration-200">
-                            Salvar Alterações
+                            <i class="fas fa-save mr-2"></i>Salvar Alterações
                         </button>
                     </div>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Categorias Personalizadas</h3>
-                    <div class="space-y-2">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">As categorias padrão são: Alimentação,
-                            Transporte, Moradia, Saúde, Educação, Lazer e Outros.</p>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Em uma versão futura, você poderá adicionar
-                            categorias personalizadas.</p>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Estatísticas Gerais</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <p class="text-2xl font-bold text-finance-green-600" id="stats-total-transactions">0</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Total de Transações</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <p class="text-2xl font-bold text-blue-600" id="stats-avg-expense">R$ 0</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Gasto Médio</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <p class="text-2xl font-bold text-purple-600" id="stats-most-category">-</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Categoria Top</p>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <p class="text-2xl font-bold text-orange-600" id="stats-months-active">0</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Meses Ativos</p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg card-shadow">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Dados</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Gerenciar Dados</h3>
                     <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="exportAllData()"
+                                class="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+                                <i class="fas fa-download mr-2"></i>
+                                Exportar Todos os Dados
+                            </button>
+                            <label class="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors duration-200 text-center cursor-pointer">
+                                <i class="fas fa-upload mr-2"></i>
+                                Importar Dados
+                                <input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+                            </label>
+                        </div>
                         <button onclick="clearAllData()"
-                            class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200">
+                            class="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200">
                             <i class="fas fa-trash mr-2"></i>
                             Limpar Todos os Dados
                         </button>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Esta ação removerá todas as transações
-                            registradas.</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            Os dados são armazenados localmente no seu navegador. Faça backup regularmente.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -444,6 +569,7 @@
     </div>
 
     <script src="script.js"></script>
+
 </body>
 
 </html>
