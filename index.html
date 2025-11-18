@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="blue">
+    <meta name="apple-mobile-web-app-title" content="FinanceManager">
+    <title>FinanceManager - Controle Financeiro</title>
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+
+    <!-- hidden for import -->
+    <input type="file" id="import-input" class="hidden" accept=".json">
+
+    <div class="container">
+        <!-- HEADER / TOP BAR -->
+        <header>
+            <div>
+                <h1>FinanceManager</h1>
+                <p>Controle mensal de renda, PIX, cartões, caixinhas e planejados.</p>
+            </div>
+
+            <div class="controls">
+                <button class="date-trigger" onclick="openCalendar()">
+                    <span id="date-display">Carregando...</span>
+                    <span>📅</span>
+                </button>
+
+                <button class="btn btn-gray" onclick="openReport()">📄 Relatório</button>
+                <button class="btn btn-blue" onclick="importData()" title="Importar Backup JSON">📂 Importar</button>
+                <button class="btn btn-green" onclick="exportData()" title="Exportar Backup JSON">💾 Exportar</button>
+            </div>
+        </header>
+
+        <!-- DASHBOARD RESUMO -->
+        <div class="dashboard">
+            <div class="dash-card" style="border-color: var(--green);">
+                <h3>Renda Total</h3>
+                <p class="text-green" id="dash-inc">R$ 0,00</p>
+            </div>
+            <div class="dash-card" style="border-color: var(--red);">
+                <h3>Gastos Reais</h3>
+                <p class="text-red" id="dash-exp">R$ 0,00</p>
+            </div>
+            <div class="dash-card" style="border-color: var(--blue);">
+                <h3>Saldo Real</h3>
+                <p class="text-blue" id="dash-bal">R$ 0,00</p>
+            </div>
+            <div class="dash-card" style="border-color: var(--yellow);">
+                <h3>Saldo Estimado (com planejados)</h3>
+                <p class="text-yellow" id="dash-est">R$ 0,00</p>
+            </div>
+        </div>
+
+        <!-- GRÁFICO RESUMO  -->
+        <div class="card" style="margin-top: 20px; margin-bottom: 20px;">
+            <div class="card-header">📊 Renda vs Gastos (Ano)</div>
+            <canvas id="chart-year" height="120"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold text-slate-300">Visão gráfica do mês</span>
+                    <span
+                        class="text-xs px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-300 border border-emerald-500/40">
+                        Dashboard
+                    </span>
+                </div>
+                <span class="text-xs text-slate-400">Renda x Gastos x Planejados</span>
+            </div>
+            <div class="relative h-52 sm:h-64">
+                <canvas id="chart-summary"></canvas>
+            </div>
+        </div>
+
+        <!-- GRID PRINCIPAL  -->
+        <div class="main-grid">
+            <!-- Coluna esquerda -->
+            <div style="display:flex; flex-direction:column; gap:20px;">
+                <!-- RENDA -->
+                <div class="card">
+                    <div class="card-header">💰 Renda</div>
+                    <div class="scroll-list">
+                        <small class="text-bold text-muted">RECORRENTES</small>
+                        <ul id="list-inc-rec"></ul>
+                        <div class="mt-2"></div>
+                        <small class="text-bold text-muted">ÚNICAS</small>
+                        <ul id="list-inc-uniq"></ul>
+                    </div>
+                    <button class="btn btn-green w-full mt-2" onclick="openModal('modal-income')">+ Adicionar
+                        Renda</button>
+                </div>
+
+                <!-- PIX / DÉBITO -->
+                <div class="card">
+                    <div class="card-header">💸 PIX / Débito</div>
+                    <div class="scroll-list">
+                        <small class="text-bold text-muted">RECORRENTES</small>
+                        <ul id="list-pix-rec"></ul>
+                        <div class="mt-2"></div>
+                        <small class="text-bold text-muted">PARCELADOS</small>
+                        <ul id="list-pix-inst"></ul>
+                        <div class="mt-2"></div>
+                        <small class="text-bold text-muted">ÚNICAS</small>
+                        <ul id="list-pix-uniq"></ul>
+                    </div>
+                    <div
+                        style="display:flex; justify-content:space-between; font-weight:bold; padding:10px 0; border-top:1px solid var(--border); margin-top:4px;">
+                        <span>Total PIX:</span> <span class="text-red" id="total-pix">R$ 0,00</span>
+                    </div>
+                    <button class="btn btn-gray w-full mt-1" onclick="openModal('modal-pix')">+ Adicionar PIX</button>
+                </div>
+            </div>
+
+            <!-- Cartões -->
+            <div class="card">
+                <div class="card-header">💳 Cartões de Crédito</div>
+                <div class="scroll-list" style="max-height: none;">
+                    <div class="text-bold text-muted mb-1">FIXOS</div>
+                    <div id="list-fixed"></div>
+
+                    <div class="text-bold text-muted mt-2 mb-1">VARIÁVEIS</div>
+                    <div id="list-tracked"></div>
+
+                    <div class="text-bold text-muted mt-2 mb-1">PARCELAS</div>
+                    <div style="color: var(--purple); font-weight:bold; font-size:0.8rem;">NUBANK</div>
+                    <div id="list-inst-nubank"></div>
+                    <div style="color: var(--blue); font-weight:bold; font-size:0.8rem; margin-top:5px;">MERCADO PAGO
+                    </div>
+                    <div id="list-inst-mp"></div>
+                    <div style="color: #9ca3af; font-weight:bold; font-size:0.8rem; margin-top:5px;">OUTRO</div>
+                    <div id="list-inst-other"></div>
+                </div>
+                <div id="total-cards" style="border-top:1px solid var(--border); padding-top:10px; font-size:0.85rem;">
+                </div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="btn btn-gray w-full" onclick="openModal('modal-recurring')">+ Recorrente</button>
+                    <button class="btn btn-blue w-full" onclick="openModal('modal-installment')">+ Parcelada</button>
+                </div>
+            </div>
+
+            <!-- Coluna direita -->
+            <div style="display:flex; flex-direction:column; gap:20px;">
+                <!-- Caixinhas -->
+                <div class="card">
+                    <div class="card-header">🏦 Caixinhas</div>
+                    <div class="scroll-list">
+                        <small class="text-bold text-muted">RECORRENTES</small>
+                        <ul id="list-sav-rec"></ul>
+                        <div class="mt-2"></div>
+                        <small class="text-bold text-muted">ÚNICAS</small>
+                        <ul id="list-sav-uniq"></ul>
+                    </div>
+                    <button class="btn btn-purple w-full mt-2" onclick="openModal('modal-savings')">+ Adicionar
+                        Depósito</button>
+                </div>
+
+                <!-- Planejadas -->
+                <div class="card">
+                    <div class="card-header">🗓️ Despesas Planejadas</div>
+                    <div class="scroll-list">
+                        <small style="color:var(--text-muted); font-style:italic;">* Contam apenas no saldo
+                            estimado</small>
+                        <ul id="list-plan" class="mt-2"></ul>
+                    </div>
+                    <button class="btn btn-yellow w-full mt-2" onclick="openModal('modal-planned')">+ Adicionar
+                        Planejamento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão de ajuda -->
+    <button id="help-btn" onclick="showHelpModal()" title="Ajuda">
+        ?
+    </button>
+
+    <!-- MODAL CALENDÁRIO -->
+    <div id="modal-calendar" class="modal-overlay">
+        <div class="modal calendar-modal">
+            <div class="cal-header">
+                <button class="cal-nav-btn" onclick="changePickerYear(-1)">&lt;</button>
+                <div class="cal-year-btn" id="cal-year-display">2023</div>
+                <button class="cal-nav-btn" onclick="changePickerYear(1)">&gt;</button>
+            </div>
+            <div class="cal-grid" id="cal-months-grid"></div>
+            <div class="cal-actions">
+                <button onclick="closeModal('modal-calendar')">Cancelar</button>
+                <button onclick="applyCalendar()">Ok</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RELATÓRIO -->
+    <div id="modal-report" class="modal-overlay">
+        <div class="modal report-modal">
+            <div class="report-header">
+                <h1>Relatório</h1>
+                <span id="rep-date">Janeiro/2020</span>
+            </div>
+            <div class="report-section report-summary">
+                <h3>Resumo</h3>
+                <div class="rep-row"><span>Renda Total:</span><span id="rep-inc">R$ 0,00</span></div>
+                <div class="rep-row"><span>Custo Total:</span><span id="rep-exp">R$ 0,00</span></div>
+                <div class="rep-row"><span>Saldo Final:</span><span id="rep-bal">R$ 0,00</span></div>
+            </div>
+            <div class="report-section">
+                <h3>Renda</h3>
+                <table class="report-table">
+                    <tbody id="rep-table-inc"></tbody>
+                </table>
+            </div>
+            <div class="report-section">
+                <h3>Gastos Fixos</h3>
+                <table class="report-table">
+                    <tbody id="rep-table-fix"></tbody>
+                </table>
+            </div>
+            <div class="report-section">
+                <h3>Gastos Variáveis</h3>
+                <table class="report-table">
+                    <tbody id="rep-table-var"></tbody>
+                </table>
+            </div>
+            <div class="modal-btns">
+                <button class="btn btn-gray" onclick="closeModal('modal-report')">Fechar</button>
+                <button class="btn btn-blue" onclick="window.print()">Imprimir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAIS DE FORMULÁRIO -->
+    <div id="modal-income" class="modal-overlay">
+        <div class="modal">
+            <h2>Adicionar Renda</h2>
+            <form id="form-income">
+                <div class="form-group" id="grp-inc-month">
+                    <label>Mês</label>
+                    <select id="inp-inc-month"></select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="inp-inc-desc" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor</label>
+                    <input type="number" step="0.01" id="inp-inc-amount" required>
+                </div>
+                <div class="form-group">
+                    <label>Dia</label>
+                    <input type="number" id="inp-inc-date" required>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="chk-inc-rec">
+                    <label for="chk-inc-rec">Recorrente (todo mês)?</label>
+                </div>
+                <div class="form-group hidden" id="grp-inc-start">
+                    <label>Início</label>
+                    <select id="inp-inc-start"></select>
+                </div>
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray" onclick="closeModal('modal-income')">Cancelar</button>
+                    <button type="submit" class="btn btn-green">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-pix" class="modal-overlay">
+        <div class="modal">
+            <h2>Adicionar PIX / Débito</h2>
+            <form id="form-pix">
+                <div class="form-group" id="grp-pix-month">
+                    <label>Mês</label>
+                    <select id="inp-pix-month"></select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="inp-pix-desc" required>
+                </div>
+                <div class="form-group">
+                    <label>Para</label>
+                    <input type="text" id="inp-pix-to">
+                </div>
+                <div class="form-group" id="grp-pix-single-val">
+                    <label>Valor</label>
+                    <input type="number" step="0.01" id="inp-pix-amount">
+                </div>
+                <div class="form-group">
+                    <label>Dia</label>
+                    <input type="number" id="inp-pix-date" required>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="chk-pix-rec">
+                    <label for="chk-pix-rec">Recorrente?</label>
+                </div>
+                <div class="form-group hidden" id="grp-pix-start">
+                    <label>Início</label>
+                    <select id="inp-pix-start"></select>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="chk-pix-inst">
+                    <label for="chk-pix-inst">Parcelado (cartão de terceiros)?</label>
+                </div>
+                <div id="grp-pix-inst" class="hidden">
+                    <div class="form-group">
+                        <label>Valor Total</label>
+                        <input type="number" step="0.01" id="inp-pix-inst-total">
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div class="form-group">
+                            <label>Nº Parc.</label>
+                            <input type="number" id="inp-pix-inst-count">
+                        </div>
+                        <div class="form-group">
+                            <label>1ª Parc.</label>
+                            <select id="inp-pix-inst-start"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray" onclick="closeModal('modal-pix')">Cancelar</button>
+                    <button type="submit" class="btn btn-gray">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-installment" class="modal-overlay">
+        <div class="modal">
+            <h2>Adicionar Parcelada (Cartão)</h2>
+            <form id="form-inst">
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="inp-inst-desc" required>
+                </div>
+                <div class="form-group">
+                    <label>Cartão</label>
+                    <select id="inp-inst-card">
+                        <option>Nubank</option>
+                        <option>Mercado Pago</option>
+                        <option>Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Total</label>
+                    <input type="number" step="0.01" id="inp-inst-total" required>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>Nº Parc.</label>
+                        <input type="number" id="inp-inst-count" required>
+                    </div>
+                    <div class="form-group">
+                        <label>1ª Parc.</label>
+                        <select id="inp-inst-start"></select>
+                    </div>
+                </div>
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray"
+                        onclick="closeModal('modal-installment')">Cancelar</button>
+                    <button type="submit" class="btn btn-blue">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-recurring" class="modal-overlay">
+        <div class="modal">
+            <h2>Gasto Recorrente (Cartão)</h2>
+            <form id="form-rec">
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <select id="inp-rec-type">
+                        <option value="fixed">Fixo</option>
+                        <option value="tracked">Variável com limite</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="inp-rec-desc" required>
+                </div>
+                <div class="form-group">
+                    <label>Cartão</label>
+                    <select id="inp-rec-card">
+                        <option>Nubank</option>
+                        <option>Mercado Pago</option>
+                        <option>Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Início</label>
+                    <select id="inp-rec-start"></select>
+                </div>
+                <div id="grp-rec-val" class="form-group">
+                    <label>Valor</label>
+                    <input type="number" step="0.01" id="inp-rec-val">
+                </div>
+                <div id="grp-rec-lim" class="form-group hidden">
+                    <label>Limite</label>
+                    <input type="number" step="0.01" id="inp-rec-lim">
+                </div>
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray" onclick="closeModal('modal-recurring')">Cancelar</button>
+                    <button type="submit" class="btn btn-gray">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-savings" class="modal-overlay">
+        <div class="modal">
+            <h2>Adicionar Depósito em Caixinha</h2>
+            <form id="form-sav">
+                <div class="form-group" id="grp-sav-month">
+                    <label>Mês</label>
+                    <select id="inp-sav-month"></select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="inp-sav-desc" required>
+                </div>
+                <div class="form-group">
+                    <label>Valor</label>
+                    <input type="number" step="0.01" id="inp-sav-amount" required>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="chk-sav-rec">
+                    <label for="chk-sav-rec">Recorrente?</label>
+                </div>
+                <div class="form-group hidden" id="grp-sav-start">
+                    <label>Início</label>
+                    <select id="inp-sav-start"></select>
+                </div>
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray" onclick="closeModal('modal-savings')">Cancelar</button>
+                    <button type="submit" class="btn btn-purple">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-planned" class="modal-overlay">
+        <div class="modal">
+            <h2>Adicionar Planejado</h2>
+            <form id="form-plan">
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="inp-plan-desc" required>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="chk-plan-inst">
+                    <label for="chk-plan-inst">Parcelada?</label>
+                </div>
+                <div id="grp-plan-single">
+                    <div class="form-group">
+                        <label>Mês</label>
+                        <select id="inp-plan-month"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Valor</label>
+                        <input type="number" step="0.01" id="inp-plan-amount">
+                    </div>
+                </div>
+                <div id="grp-plan-inst" class="hidden">
+                    <div class="form-group">
+                        <label>Total</label>
+                        <input type="number" step="0.01" id="inp-plan-total">
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <div class="form-group">
+                            <label>Nº Parc.</label>
+                            <input type="number" id="inp-plan-count">
+                        </div>
+                        <div class="form-group">
+                            <label>1ª Parc.</label>
+                            <select id="inp-plan-start"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray" onclick="closeModal('modal-planned')">Cancelar</button>
+                    <button type="submit" class="btn btn-yellow">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-prepay" class="modal-overlay">
+        <div class="modal">
+            <h2>Adiantar Parcelas</h2>
+            <form id="form-prepay">
+                <input type="hidden" id="inp-pre-id">
+                <p style="margin-bottom:10px">Item: <strong id="txt-pre-item"></strong></p>
+                <p style="margin-bottom:15px; font-size:0.9rem; color:#9ca3af;">Atual: <span id="txt-pre-info"></span>
+                </p>
+                <div class="form-group">
+                    <label>Quantas parcelas você quer adiantar?</label>
+                    <input type="number" id="inp-pre-count" required>
+                </div>
+                <p style="text-align:center; font-weight:bold; font-size:1.2rem; color:var(--blue);" id="txt-pre-total">
+                    R$ 0,00</p>
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray" onclick="closeModal('modal-prepay')">Cancelar</button>
+                    <button type="submit" class="btn btn-green">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-edit" class="modal-overlay">
+        <div class="modal">
+            <h2>Editar Item</h2>
+            <form id="form-edit">
+                <input type="hidden" id="edt-id">
+                <input type="hidden" id="edt-type">
+                <div class="form-group" id="grp-edt-month">
+                    <label>Mês</label>
+                    <select id="edt-month"></select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <input type="text" id="edt-desc" required>
+                </div>
+                <div class="form-group hidden" id="grp-edt-start">
+                    <label>Início da Recorrência</label>
+                    <select id="edt-start"></select>
+                    <small class="text-blue">Edições criam novo histórico a partir desta data.</small>
+                </div>
+                <div class="form-group" id="grp-edt-amt">
+                    <label>Valor</label>
+                    <input type="number" step="0.01" id="edt-amt">
+                </div>
+                <div class="form-group" id="grp-edt-date">
+                    <label>Dia</label>
+                    <input type="number" id="edt-date">
+                </div>
+                <div class="form-group" id="grp-edt-to">
+                    <label>Para</label>
+                    <input type="text" id="edt-to">
+                </div>
+                <div class="form-group" id="grp-edt-card">
+                    <label>Cartão</label>
+                    <select id="edt-card">
+                        <option>Nubank</option>
+                        <option>Mercado Pago</option>
+                        <option>Outro</option>
+                    </select>
+                </div>
+                <div class="form-group" id="grp-edt-lim">
+                    <label>Limite</label>
+                    <input type="number" step="0.01" id="edt-lim">
+                </div>
+                <div id="grp-edt-inst" class="hidden" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="form-group">
+                        <label>Total</label>
+                        <input type="number" step="0.01" id="edt-inst-total">
+                    </div>
+                    <div class="form-group">
+                        <label>Nº Parc.</label>
+                        <input type="number" id="edt-inst-count">
+                    </div>
+                    <div class="form-group" style="grid-column:span 2">
+                        <label>1ª Parc.</label>
+                        <select id="edt-inst-start"></select>
+                    </div>
+                </div>
+                <div class="modal-btns">
+                    <button type="button" class="btn btn-gray" onclick="closeModal('modal-edit')">Cancelar</button>
+                    <button type="submit" class="btn btn-blue">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        const ChartJsUrl = "https://cdn.jsdelivr.net/npm/chart.js"; 
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+
+</html>
