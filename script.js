@@ -5,7 +5,7 @@ let DB = {
     pix: [], rec_pix: [], pix_installments: [],
     savings: [], rec_savings: [],
     fixed: [], tracked: [], tracked_data: [], installments: [],
-    planned: [], planned_inst: []
+    planned: [], planned_inst: [], boxes: []
 };
 
 // Datas
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderApp();
 });
 
-// --- CORE: RENDER ---
 function renderApp() {
     const currentMKey = getMKey(curMonth, curYear);
     document.getElementById('date-display').innerText = `${months[curMonth - 1]} ${curYear}`;
@@ -68,6 +67,7 @@ function renderApp() {
 
     let totInc = 0, totExp = 0, totPix = 0;
     let cards = {};
+    let totBox = 0; // saldo total da caixinha
 
     // 1. Renda
     const lIncRec = document.getElementById('list-inc-rec'); lIncRec.innerHTML = '';
@@ -110,17 +110,21 @@ function renderApp() {
     });
 
     // 3. Caixinha
-    const lSavRec = document.getElementById('list-sav-rec'); lSavRec.innerHTML = '';
-    DB.rec_savings.filter(i => isActive(i.start, i.end)).forEach(i => {
-        totExp += i.val;
-        lSavRec.innerHTML += row(i, 'rec_savings', 'text-purple', '-');
+    // Agora caixinha é só saldo acumulado em dash-box, não entra mais como gasto do mês.
+    // Considera que val pode ser + (depósito) ou - (saque).
+    DB.savings.forEach(i => {
+        totBox += i.val;
     });
 
-    const lSavUniq = document.getElementById('list-sav-uniq'); lSavUniq.innerHTML = '';
-    DB.savings.filter(i => i.month === currentMKey).forEach(i => {
-        totExp += i.val;
-        lSavUniq.innerHTML += row(i, 'savings', 'text-purple', '-');
-    });
+    // se ainda existir o card antigo, limpa as listas pra não mostrar nada
+    const lSavRec = document.getElementById('list-sav-rec');
+    const lSavUniq = document.getElementById('list-sav-uniq');
+    if (lSavRec) lSavRec.innerHTML = '';
+    if (lSavUniq) lSavUniq.innerHTML = '';
+
+    // atualiza o card da caixinha
+    const dashBoxEl = document.getElementById('dash-box');
+    if (dashBoxEl) dashBoxEl.innerText = fmtMoney(totBox);
 
     // 4. Cartões
     const lFixed = document.getElementById('list-fixed'); lFixed.innerHTML = '';
@@ -964,6 +968,7 @@ function showHelpModal() {
         if (e.target === overlay) overlay.remove();
     });
 }
+
 function buildYearChart() {
     const year = curYear;
 
@@ -1019,19 +1024,9 @@ function buildYearChart() {
         }
     });
 
-    // Caixinhas únicas
-    DB.savings.forEach(i => addExpense(i.month, i.val));
-
-    // Caixinhas recorrentes
-    DB.rec_savings.forEach(i => {
-        let start = getKeyVal(i.start);
-        let end = i.end ? getKeyVal(i.end) : getKeyVal(`12-${year + 1}`);
-        for (let x = 1; x <= 12; x++) {
-            const mk = getMKey(x, year);
-            const mkVal = getKeyVal(mk);
-            if (mkVal >= start && mkVal <= end) addExpense(mk, i.val);
-        }
-    });
+    // Caixinha NÃO entra mais no gráfico anual (é só transferência entre contas)
+    // Se um dia quiser considerar só saques como gasto:
+    // DB.savings.forEach(i => { if (i.val < 0) addExpense(i.month, Math.abs(i.val)); });
 
     // Fixos (cartões)
     DB.fixed.forEach(i => {
@@ -1063,7 +1058,7 @@ function buildYearChart() {
         }
     });
 
-    // Planejados (não entram no saldo real, mas entram no gráfico se quiser)
+    // Planejados
     DB.planned.forEach(i => addExpense(i.month, i.val));
 
     DB.planned_inst.forEach(i => {
@@ -1100,3 +1095,5 @@ function buildYearChart() {
         }
     });
 }
+
+
