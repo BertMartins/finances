@@ -617,12 +617,8 @@ function openModal(id) {
         document.getElementById('inp-inc-date').value = '';
     }
     if (id === 'modal-savings') {
-        document.getElementById('chk-sav-rec').checked = false;
         document.getElementById('grp-sav-start').classList.add('hidden');
-        document.getElementById('grp-sav-month').classList.remove('hidden');
         document.getElementById('inp-sav-start').value = currentMKey;
-        document.getElementById('inp-sav-month').value = currentMKey;
-        document.getElementById('inp-sav-desc').value = '';
         document.getElementById('inp-sav-amount').value = '';
     }
     if (id === 'modal-recurring') {
@@ -657,10 +653,6 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
 document.getElementById('chk-inc-rec').onchange = (e) => {
     document.getElementById('grp-inc-start').classList.toggle('hidden', !e.target.checked);
     document.getElementById('grp-inc-month').classList.toggle('hidden', e.target.checked);
-};
-document.getElementById('chk-sav-rec').onchange = (e) => {
-    document.getElementById('grp-sav-start').classList.toggle('hidden', !e.target.checked);
-    document.getElementById('grp-sav-month').classList.toggle('hidden', e.target.checked);
 };
 document.getElementById('chk-plan-inst').onchange = (e) => {
     document.getElementById('grp-plan-inst').classList.toggle('hidden', !e.target.checked);
@@ -774,14 +766,11 @@ function addItem(code) {
         closeModal('modal-recurring');
     }
     if (code === 'sav') {
-        const isRec = document.getElementById('chk-sav-rec').checked;
-        const desc = document.getElementById('inp-sav-desc').value;
         const val = parseFloat(document.getElementById('inp-sav-amount').value) || 0;
-        if (!desc || !val) { alert('Preencha descrição e valor.'); return; }
-        if (isRec) DB.rec_savings.push({ id: 'rsav' + id, desc, val, start: document.getElementById('inp-sav-start').value, end: null });
-        else DB.savings.push({ id: 'sav' + id, desc, val, month: document.getElementById('inp-sav-month').value });
+        DB.savings.push({ val });
         closeModal('modal-savings');
     }
+
     if (code === 'plan') {
         const isInst = document.getElementById('chk-plan-inst').checked;
         const desc = document.getElementById('inp-plan-desc').value;
@@ -1095,5 +1084,3 @@ function buildYearChart() {
         }
     });
 }
-
-
