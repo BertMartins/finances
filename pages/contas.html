@@ -1,0 +1,101 @@
+<!-- pages/contas.html -->
+
+<div class="grid lg:grid-cols-3 gap-6">
+
+    <!-- FORM -->
+    <div class="card">
+
+        <h2 class="text-2xl font-black mb-6">
+            Nova Conta
+        </h2>
+
+        <div class="space-y-4">
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
+                    Nome da Conta
+                </label>
+
+                <input
+                    id="nomeConta"
+                    type="text"
+                    class="input"
+                    placeholder="Ex: Internet"
+                />
+
+            </div>
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
+                    Valor
+                </label>
+
+                <input
+                    id="valorConta"
+                    type="number"
+                    class="input"
+                    placeholder="150"
+                />
+
+            </div>
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
+                    Tipo
+                </label>
+
+                <select
+                    id="tipoConta"
+                    class="input"
+                    onchange="alterarTipoConta()">
+
+                    <option value="compartilhada">
+                        Compartilhada
+                    </option>
+
+                    <option value="individual">
+                        Individual
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div id="containerPessoa" class="hidden">
+
+                <label class="text-slate-400 text-sm">
+                    Pessoa
+                </label>
+
+                <select
+                    id="pessoaConta"
+                    class="input">
+
+                </select>
+
+            </div>
+
+            <button
+                onclick="adicionarConta()"
+                class="btn-primary w-full">
+                Adicionar Conta
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- LISTA -->
+    <div class="lg:col-span-2">
+
+        <div id="listaContas"
+             class="space-y-4">
+
+        </div>
+
+    </div>
+
+</div>

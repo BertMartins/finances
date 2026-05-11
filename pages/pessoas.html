@@ -1,0 +1,66 @@
+<!-- pages/pessoas.html -->
+
+<div class="grid lg:grid-cols-3 gap-6">
+
+    <!-- FORM -->
+    <div class="card lg:col-span-1">
+
+        <h2 class="text-2xl font-black mb-6">
+            Nova Pessoa
+        </h2>
+
+        <div class="space-y-4">
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
+                    Nome
+                </label>
+
+                <input
+                    id="nomePessoa"
+                    type="text"
+                    class="input"
+                    placeholder="Ex: João"
+                />
+
+            </div>
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
+                    Salário
+                </label>
+
+                <input
+                    id="salarioPessoa"
+                    type="number"
+                    class="input"
+                    placeholder="2500"
+                />
+
+            </div>
+
+            <button
+                onclick="adicionarPessoa()"
+                class="btn-primary w-full">
+
+                Adicionar Pessoa
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- LISTA -->
+    <div class="lg:col-span-2">
+
+        <div id="listaPessoas"
+             class="grid md:grid-cols-2 gap-6">
+
+        </div>
+
+    </div>
+
+</div>

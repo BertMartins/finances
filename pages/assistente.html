@@ -1,0 +1,105 @@
+<!-- pages/assistente.html -->
+
+<div class="grid lg:grid-cols-4 gap-6 h-[calc(100vh-180px)]">
+
+    <!-- SIDEBAR -->
+    <div class="card lg:col-span-1 flex flex-col">
+
+        <div>
+
+            <h2 class="text-2xl font-black">
+                🤖 Assistente IA
+            </h2>
+
+            <p class="text-slate-400 mt-2 text-sm">
+                Seu ajudante financeiro familiar
+            </p>
+
+        </div>
+
+        <div class="mt-8 space-y-3">
+
+            <button
+                onclick="perguntaRapida('Quanto posso gastar esse mês?')"
+                class="w-full text-left bg-slate-800 hover:bg-slate-700 p-4 rounded-2xl transition">
+
+                Quanto posso gastar esse mês?
+
+            </button>
+
+            <button
+                onclick="perguntaRapida('Quem está gastando mais?')"
+                class="w-full text-left bg-slate-800 hover:bg-slate-700 p-4 rounded-2xl transition">
+
+                Quem está gastando mais?
+
+            </button>
+
+            <button
+                onclick="perguntaRapida('Quanto sobrou para cada pessoa?')"
+                class="w-full text-left bg-slate-800 hover:bg-slate-700 p-4 rounded-2xl transition">
+
+                Quanto sobrou para cada pessoa?
+
+            </button>
+
+            <button
+                onclick="perguntaRapida('Como estão as contas da casa?')"
+                class="w-full text-left bg-slate-800 hover:bg-slate-700 p-4 rounded-2xl transition">
+
+                Como estão as contas da casa?
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- CHAT -->
+    <div class="card lg:col-span-3 flex flex-col">
+
+        <!-- CHAT -->
+        <div
+            id="chatIA"
+            class="flex-1 overflow-auto space-y-4 pr-2">
+
+            <div class="flex">
+
+                <div class="bg-cyan-500 text-black rounded-2xl p-4 max-w-xl">
+
+                    Olá 👋<br><br>
+
+                    Sou seu assistente financeiro.<br>
+                    Posso analisar os gastos da família,
+                    sobras mensais e ajudar no controle financeiro.
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- INPUT -->
+        <div class="mt-6 flex gap-4">
+
+            <input
+                id="inputIA"
+                type="text"
+                placeholder="Pergunte algo..."
+                class="input flex-1"
+                onkeydown="if(event.key === 'Enter') enviarPergunta()"
+            />
+
+            <button
+                onclick="enviarPergunta()"
+                class="btn-primary px-8">
+
+                Enviar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
