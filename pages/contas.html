@@ -44,6 +44,42 @@
             <div>
 
                 <label class="text-slate-400 text-sm">
+                    Categoria
+                </label>
+
+                <select
+                    id="categoriaConta"
+                    class="input">
+
+                    <option value="Casa">Casa</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Cartão">Cartão</option>
+                    <option value="Outros">Outros</option>
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
+                    Data
+                </label>
+
+                <input
+                    id="dataConta"
+                    type="date"
+                    class="input"
+                />
+
+            </div>
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
                     Tipo
                 </label>
 
@@ -78,10 +114,54 @@
 
             </div>
 
+            <div class="flex gap-4">
+
+                <label class="flex items-center gap-2">
+
+                    <input
+                        id="recorrenteConta"
+                        type="checkbox">
+
+                    <span class="text-sm text-slate-300">
+                        Recorrente
+                    </span>
+
+                </label>
+
+                <label class="flex items-center gap-2">
+
+                    <input
+                        id="pagoConta"
+                        type="checkbox"
+                        checked>
+
+                    <span class="text-sm text-slate-300">
+                        Pago
+                    </span>
+
+                </label>
+
+            </div>
+
+            <div>
+
+                <label class="text-slate-400 text-sm">
+                    Observação
+                </label>
+
+                <textarea
+                    id="observacaoConta"
+                    class="input min-h-[100px]"
+                    placeholder="Observações..."></textarea>
+
+            </div>
+
             <button
                 onclick="adicionarConta()"
                 class="btn-primary w-full">
+
                 Adicionar Conta
+
             </button>
 
         </div>

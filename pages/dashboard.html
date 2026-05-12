@@ -1,5 +1,32 @@
 <!-- pages/dashboard.html -->
 
+<div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+
+    <div>
+
+        <h2 class="text-3xl font-black">
+            Dashboard Financeiro
+        </h2>
+
+        <p class="text-slate-400 mt-1">
+            Visão geral das finanças familiares
+        </p>
+
+    </div>
+
+    <div class="flex items-center gap-3">
+
+        <select
+            id="mesSelecionado"
+            class="input w-[180px]"
+            onchange="renderizarDashboard()">
+
+        </select>
+
+    </div>
+
+</div>
+
 <div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
 
     <div class="card">

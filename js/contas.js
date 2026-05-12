@@ -41,17 +41,36 @@ function carregarPessoasSelect() {
 function adicionarConta() {
 
     const nome =
-        document.getElementById("nomeConta").value;
+        document.getElementById("nomeConta")
+        .value
+        .trim();
 
     const valor = Number(
         document.getElementById("valorConta").value
     );
+
+    const categoria =
+        document.getElementById("categoriaConta").value;
+
+    const data =
+        document.getElementById("dataConta").value;
 
     const tipo =
         document.getElementById("tipoConta").value;
 
     const pessoaId =
         document.getElementById("pessoaConta").value;
+
+    const recorrente =
+        document.getElementById("recorrenteConta").checked;
+
+    const pago =
+        document.getElementById("pagoConta").checked;
+
+    const observacao =
+        document.getElementById("observacaoConta")
+        .value
+        .trim();
 
     if (!nome || valor <= 0) {
 
@@ -64,20 +83,51 @@ function adicionarConta() {
 
     contas.push({
         id: gerarId(),
+
         nome,
         valor,
+
+        categoria,
+        data,
+
         tipo,
-        pessoaId: tipo === "individual"
-            ? pessoaId
-            : null
+
+        recorrente,
+        pago,
+
+        observacao,
+
+        pessoaId:
+            tipo === "individual"
+                ? pessoaId
+                : null
     });
 
     salvarContas(contas);
 
-    document.getElementById("nomeConta").value = "";
-    document.getElementById("valorConta").value = "";
+    limparFormularioConta();
 
     renderizarContas();
+
+    if (typeof renderizarDashboard === "function") {
+        renderizarDashboard();
+    }
+}
+
+function limparFormularioConta() {
+
+    document.getElementById("nomeConta").value = "";
+
+    document.getElementById("valorConta").value = "";
+
+    document.getElementById("observacaoConta").value = "";
+
+    document.getElementById("recorrenteConta").checked = false;
+
+    document.getElementById("pagoConta").checked = true;
+
+    document.getElementById("dataConta").value =
+        new Date().toISOString().split("T")[0];
 }
 
 function removerConta(id) {
@@ -89,6 +139,10 @@ function removerConta(id) {
     salvarContas(contas);
 
     renderizarContas();
+
+    if (typeof renderizarDashboard === "function") {
+        renderizarDashboard();
+    }
 }
 
 function obterNomePessoa(id) {
@@ -101,6 +155,14 @@ function obterNomePessoa(id) {
     return pessoa?.nome || "-";
 }
 
+function formatarData(data) {
+
+    if (!data)
+        return "-";
+
+    return new Date(data).toLocaleDateString("pt-BR");
+}
+
 function renderizarContas() {
 
     const container =
@@ -109,7 +171,10 @@ function renderizarContas() {
     if (!container)
         return;
 
-    const contas = obterContas();
+    const contas = obterContas()
+        .sort((a, b) =>
+            new Date(b.data) - new Date(a.data)
+        );
 
     container.innerHTML = "";
 
@@ -133,11 +198,11 @@ function renderizarContas() {
         container.innerHTML += `
             <div class="card">
 
-                <div class="flex justify-between items-start">
+                <div class="flex justify-between items-start gap-4">
 
-                    <div>
+                    <div class="flex-1">
 
-                        <div class="flex items-center gap-3">
+                        <div class="flex flex-wrap items-center gap-3">
 
                             <h3 class="text-2xl font-black">
                                 ${conta.nome}
@@ -154,20 +219,51 @@ function renderizarContas() {
 
                             </span>
 
+                            <span class="
+                                px-3 py-1 rounded-full text-xs font-bold
+                                bg-slate-700
+                            ">
+                                ${conta.categoria || "Outros"}
+                            </span>
+
                         </div>
 
-                        <p class="text-slate-400 mt-2">
-                            Valor:
-                            ${formatarMoeda(conta.valor)}
-                        </p>
+                        <div class="mt-4 grid md:grid-cols-2 gap-2 text-sm">
+
+                            <p class="text-slate-400">
+                                💰 ${formatarMoeda(conta.valor)}
+                            </p>
+
+                            <p class="text-slate-400">
+                                📅 ${formatarData(conta.data)}
+                            </p>
+
+                            <p class="text-slate-400">
+                                ✅ ${conta.pago ? "Pago" : "Pendente"}
+                            </p>
+
+                            <p class="text-slate-400">
+                                🔁 ${conta.recorrente ? "Recorrente" : "Única"}
+                            </p>
+
+                            ${
+                                conta.tipo === "individual"
+                                ? `
+                                    <p class="text-slate-400">
+                                        👤 ${obterNomePessoa(conta.pessoaId)}
+                                    </p>
+                                `
+                                : ""
+                            }
+
+                        </div>
 
                         ${
-                            conta.tipo === "individual"
+                            conta.observacao
                             ? `
-                                <p class="text-slate-400">
-                                    Pessoa:
-                                    ${obterNomePessoa(conta.pessoaId)}
-                                </p>
+                                <div class="mt-4 p-3 bg-slate-900 rounded-xl text-sm text-slate-300">
+                                    ${conta.observacao}
+                                </div>
                             `
                             : ""
                         }
@@ -189,8 +285,7 @@ function renderizarContas() {
     });
 
     carregarPessoasSelect();
+
+    document.getElementById("dataConta").value =
+        new Date().toISOString().split("T")[0];
 }
-
-renderizarContas();
-
-carregarPessoasSelect();
