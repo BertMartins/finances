@@ -22,7 +22,6 @@ function atualizarTitulo(pagina) {
         dashboard: "Dashboard",
         pessoas: "Pessoas",
         contas: "Contas",
-        relatorios: "Relatórios",
         assistente: "Assistente IA"
     };
 

@@ -1,126 +1,189 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <title>Finanças Familiar</title>
 
-    <title>
-        Finanças Familiar
-    </title>
+    <!-- Adicionando a fonte Inter para um design mais moderno -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="stylesheet"
-          href="css/style.css">
+    <!-- Você pode manter seu link externo, coloquei o CSS na tag style abaixo para facilitar -->
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
 
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            /* Fundo com um gradiente super suave para não ficar apenas uma cor sólida */
+            background: radial-gradient(circle at top right, #0f172a, #020617);
+        }
+
+        .menu-btn {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            text-align: left;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: 1px solid transparent;
+            font-weight: 500;
+            color: #94a3b8; /* text-slate-400 */
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-btn:hover {
+            background: rgba(30, 41, 59, 0.8); /* bg-slate-800 com opacidade */
+            border-color: #334155;
+            color: #f8fafc; /* text-slate-50 */
+            transform: translateX(4px); /* Pequeno efeito de movimento */
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            border-color: rgba(51, 65, 85, 0.8);
+        }
+
+        .input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 14px 16px;
+            outline: none;
+            color: #f8fafc;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .input:focus {
+            border-color: #22d3ee;
+            box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2), inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        /* Estilizando a barra de rolagem para combinar com o tema escuro */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
 </head>
 
-<body class="bg-slate-950 text-white">
+<body class="text-white h-screen w-full">
 
-    <div class="flex min-h-screen">
+    <div class="flex h-full w-full">
 
         <!-- SIDEBAR -->
-        <aside class="w-72 bg-slate-900 border-r border-slate-800 p-5">
+        <aside class="w-72 bg-slate-900/90 border-r border-slate-800/60 p-6 flex flex-col shadow-2xl z-10">
 
-            <div class="mb-10">
-
-                <h1 class="text-3xl font-black">
+            <div class="mb-10 pl-2">
+                <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">
                     💰 Finanças
                 </h1>
-
-                <p class="text-slate-400 text-sm mt-1">
+                <p class="text-slate-400 text-sm mt-1 font-medium">
                     Controle familiar
                 </p>
-
             </div>
 
-            <nav class="space-y-2">
-
-                <button onclick="abrirPagina('dashboard')"
-                        class="menu-btn">
-
-                    📊 Dashboard
-
+            <nav class="space-y-2 flex-1">
+                <button onclick="abrirPagina('dashboard')" class="menu-btn">
+                    <span class="text-xl">📊</span> Dashboard
                 </button>
 
-                <button onclick="abrirPagina('pessoas')"
-                        class="menu-btn">
-
-                    👨‍👩‍👧 Pessoas
-
+                <button onclick="abrirPagina('pessoas')" class="menu-btn">
+                    <span class="text-xl">👨‍👩‍👧</span> Pessoas
                 </button>
 
-                <button onclick="abrirPagina('contas')"
-                        class="menu-btn">
-
-                    💸 Contas
-
+                <button onclick="abrirPagina('contas')" class="menu-btn">
+                    <span class="text-xl">💸</span> Contas
                 </button>
 
-                <button onclick="abrirPagina('relatorios')"
-                        class="menu-btn">
-
-                    📈 Relatórios
-
+                <button onclick="abrirPagina('assistente')" class="menu-btn">
+                    <span class="text-xl">🤖</span> Assistente IA
                 </button>
-
-                <button onclick="abrirPagina('assistente')"
-                        class="menu-btn">
-
-                    🤖 Assistente IA
-
-                </button>
-
             </nav>
 
         </aside>
 
-        <!-- CONTENT -->
-        <main class="flex-1 overflow-auto">
+        <!-- CONTEÚDO -->
+        <main class="flex-1 flex flex-col h-full relative">
+            
+            <!-- Efeito de brilho de fundo no main -->
+            <div class="absolute top-0 left-0 w-full h-96 bg-cyan-900/10 blur-3xl rounded-full pointer-events-none"></div>
 
-            <!-- HEADER -->
-            <header class="h-20 border-b border-slate-800 flex items-center px-8">
-
-                <h2 id="tituloPagina"
-                    class="text-2xl font-black">
-
+            <!-- TOPBAR -->
+            <header class="h-24 border-b border-slate-800/50 flex items-center px-10 bg-slate-950/50 backdrop-blur-sm z-10">
+                <h2 id="tituloPagina" class="text-2xl font-bold tracking-tight text-slate-100">
                     Dashboard
-
                 </h2>
-
             </header>
 
-            <!-- APP -->
-            <section id="app"
-                     class="p-8">
-
+            <!-- PAGE -->
+            <section id="app" class="p-10 flex-1 overflow-auto z-10">
+                <!-- O conteúdo gerado pelo JS aparecerá aqui -->
             </section>
 
         </main>
 
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- Scripts mantidos exatamente iguais -->
     <script src="js/storage.js"></script>
-
     <script src="js/utils.js"></script>
-
-    <script src="js/pessoas.js"></script>
-
-    <script src="js/contas.js"></script>
-
-    <script src="js/dashboard.js"></script>
-
-    <script src="js/assistente.js"></script>
-
     <script src="js/tabs.js"></script>
-
+    <script src="js/pessoas.js"></script>
+    <script src="js/contas.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/assistente.js"></script>
     <script src="js/app.js"></script>
 
 </body>
