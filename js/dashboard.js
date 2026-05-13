@@ -1,417 +1,391 @@
 // js/dashboard.js
 
-const MESES = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro"
-];
-
-function inicializarFiltroMes() {
-
-    const select =
-        document.getElementById("mesSelecionado");
-
-    if (!select)
-        return;
-
-    select.innerHTML = "";
-
-    const hoje = new Date();
-
-    const anoAtual = hoje.getFullYear();
-
-    for (let mes = 0; mes < 12; mes++) {
-
-        const valor =
-            `${anoAtual}-${mes}`;
-
-        select.innerHTML += `
-            <option value="${valor}">
-                ${MESES[mes]} ${anoAtual}
-            </option>
-        `;
-    }
-
-    select.value =
-        `${anoAtual}-${hoje.getMonth()}`;
-}
-
-function obterMesSelecionado() {
-
-    const select =
-        document.getElementById("mesSelecionado");
-
-    if (!select) {
-
-        const hoje = new Date();
-
-        return {
-            mes: hoje.getMonth(),
-            ano: hoje.getFullYear()
-        };
-    }
-
-    const [ano, mes] =
-        select.value.split("-");
-
-    return {
-        mes: Number(mes),
-        ano: Number(ano)
-    };
-}
-
-function obterContasMesAtual() {
-
-    const contas = obterContas();
-
-    const periodo =
-        obterMesSelecionado();
-
-    return contas.filter(conta => {
-
-        if (conta.recorrente) {
-
-            if (!conta.data)
-                return true;
-
-            const dataInicio =
-                new Date(conta.data);
-
-            const dataComparacao =
-                new Date(
-                    periodo.ano,
-                    periodo.mes,
-                    1
-                );
-
-            return dataInicio <= dataComparacao;
-        }
-
-        if (!conta.data)
-            return false;
-
-        const dataConta =
-            new Date(conta.data);
-
-        return (
-            dataConta.getMonth() === periodo.mes &&
-            dataConta.getFullYear() === periodo.ano
-        );
-    });
-}
-
 function renderizarDashboard() {
 
-    inicializarFiltroMes();
+    atualizarTextoMes();
 
-    const pessoas = obterPessoas();
+    renderizarCardsDashboard();
 
-    const contasMes =
-        obterContasMesAtual();
+    renderizarResumoPessoas();
 
-    const totalSalarios =
-        calcularTotalSalarios();
-
-    const totalGastos =
-        contasMes
-            .filter(x => x.pago)
-            .reduce((acc, conta) => {
-                return acc + Number(conta.valor);
-            }, 0);
-
-    const totalCompartilhado =
-        contasMes
-            .filter(x =>
-                x.tipo === "compartilhada" &&
-                x.pago
-            )
-            .reduce((acc, conta) => {
-                return acc + Number(conta.valor);
-            }, 0);
-
-    const sobra =
-        totalSalarios - totalGastos;
-
-    atualizarTexto(
-        "totalSalarios",
-        formatarMoeda(totalSalarios)
-    );
-
-    atualizarTexto(
-        "totalCompartilhado",
-        formatarMoeda(totalCompartilhado)
-    );
-
-    atualizarTexto(
-        "totalGastos",
-        formatarMoeda(totalGastos)
-    );
-
-    atualizarTexto(
-        "sobraFamiliar",
-        formatarMoeda(sobra)
-    );
-
-    renderizarDashboardPessoas();
-    renderizarDashboardContas();
+    renderizarUltimasContas();
 }
 
-function renderizarDashboardPessoas() {
+function renderizarCardsDashboard() {
 
-    const pessoas = obterPessoas();
+    const pessoas =
+        obterPessoas();
 
-    const contasMes =
-        obterContasMesAtual();
+    const contasFixas =
+        obterContasFixasMes(
+            appState.mesAtual
+        );
+
+    const contasVariaveis =
+        obterContasVariaveisMes(
+            appState.mesAtual
+        );
+
+    const totalSalarios =
+        pessoas.reduce(
+            (total, pessoa) =>
+                total +
+                Number(
+                    pessoa.salario || 0
+                ),
+            0
+        );
+
+    const totalFixas =
+        contasFixas.reduce(
+            (total, conta) =>
+                total +
+                Number(
+                    conta.valor || 0
+                ),
+            0
+        );
+
+    const totalVariaveis =
+        contasVariaveis.reduce(
+            (total, conta) =>
+                total +
+                Number(
+                    conta.valorParcela || 0
+                ),
+            0
+        );
+
+    const totalGastos =
+        totalFixas +
+        totalVariaveis;
+
+    const sobra =
+        totalSalarios -
+        totalGastos;
+
+    atualizarTextoElemento(
+        "totalSalarios",
+        formatarMoeda(
+            totalSalarios
+        )
+    );
+
+    atualizarTextoElemento(
+        "totalCompartilhado",
+        formatarMoeda(
+            totalFixas
+        )
+    );
+
+    atualizarTextoElemento(
+        "totalGastos",
+        formatarMoeda(
+            totalGastos
+        )
+    );
+
+    atualizarTextoElemento(
+        "sobraFamiliar",
+        formatarMoeda(
+            sobra
+        )
+    );
+}
+
+function renderizarResumoPessoas() {
 
     const container =
-        document.getElementById("dashboardPessoas");
+        document.getElementById(
+            "dashboardPessoas"
+        );
 
     if (!container)
         return;
 
+    const pessoas =
+        obterPessoas();
+
+    const contasFixas =
+        obterContasFixasMes(
+            appState.mesAtual
+        );
+
+    const contasVariaveis =
+        obterContasVariaveisMes(
+            appState.mesAtual
+        );
+
     container.innerHTML = "";
 
-    pessoas.forEach(pessoa => {
+    if (pessoas.length === 0) {
 
-        const individual =
-            contasMes
-                .filter(x =>
-                    x.tipo === "individual" &&
-                    x.pessoaId === pessoa.id &&
-                    x.pago
-                )
-                .reduce((acc, conta) => {
-                    return acc + Number(conta.valor);
-                }, 0);
+        container.innerHTML = `
+            <div class="text-slate-400">
+                Nenhuma pessoa cadastrada.
+            </div>
+        `;
 
-        const compartilhado =
-            contasMes
-                .filter(x =>
-                    x.tipo === "compartilhada" &&
-                    x.pago
-                )
-                .reduce((acc, conta) => {
-                    return acc + Number(conta.valor);
-                }, 0);
+        return;
+    }
 
-        const dividido =
-            pessoas.length > 0
-                ? compartilhado / pessoas.length
-                : 0;
+    pessoas.forEach(
+        (pessoa, index) => {
 
-        const total =
-            individual + dividido;
+            let gastos = 0;
 
-        const sobra =
-            pessoa.salario - total;
+            contasFixas.forEach(
+                conta => {
 
-        const gastoDia =
-            sobra > 0
-                ? sobra / 30
-                : 0;
+                    if (
+                        conta.tipo ===
+                        "individual"
+                    ) {
 
-        const percentual =
-            pessoa.salario > 0
-                ? ((total / pessoa.salario) * 100)
-                : 0;
+                        if (
+                            conta.pessoaId ===
+                            pessoa.id
+                        ) {
 
-        container.innerHTML += `
-            <div class="bg-slate-900 rounded-2xl p-5 border border-slate-800">
+                            gastos +=
+                                Number(
+                                    conta.valor || 0
+                                );
+                        }
+                    }
+                    else {
 
-                <div class="flex justify-between items-start gap-4">
+                        gastos +=
+                            Number(
+                                conta.valor || 0
+                            ) /
+                            pessoas.length;
+                    }
+                }
+            );
 
-                    <div>
+            contasVariaveis.forEach(
+                conta => {
 
-                        <h4 class="font-black text-xl">
-                            ${pessoa.nome}
-                        </h4>
+                    if (
+                        conta.pessoaId ===
+                        pessoa.id
+                    ) {
 
-                        <p class="text-slate-400 text-sm mt-1">
-                            Salário:
-                            ${formatarMoeda(pessoa.salario)}
-                        </p>
+                        gastos +=
+                            Number(
+                                conta.valorParcela || 0
+                            );
+                    }
+                }
+            );
 
-                    </div>
+            const sobra =
+                pessoa.salario -
+                gastos;
 
-                    <div class="text-right">
+            const livreDia =
+                sobra / 30;
 
-                        <p class="text-slate-400 text-sm">
-                            Livre por dia
-                        </p>
+            container.innerHTML += `
+                <div class="card">
 
-                        <h4 class="font-black text-cyan-400 text-lg">
-                            ${formatarMoeda(gastoDia)}
-                        </h4>
-
-                    </div>
-
-                </div>
-
-                <div class="mt-5 space-y-2">
-
-                    <div class="flex justify-between text-sm">
-
-                        <span class="text-slate-400">
-                            Gastos
-                        </span>
-
-                        <span>
-                            ${formatarMoeda(total)}
-                        </span>
-
-                    </div>
-
-                    <div class="flex justify-between text-sm">
-
-                        <span class="text-slate-400">
-                            Sobra
-                        </span>
-
-                        <span class="
-                            ${sobra >= 0
-                                ? "text-emerald-400"
-                                : "text-red-400"}
-                        ">
-                            ${formatarMoeda(sobra)}
-                        </span>
-
-                    </div>
-
-                    <div class="flex justify-between text-sm">
-
-                        <span class="text-slate-400">
-                            Comprometido
-                        </span>
-
-                        <span>
-                            ${percentual.toFixed(0)}%
-                        </span>
-
-                    </div>
-
-                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div class="
+                        flex items-center
+                        gap-4 mb-4
+                    ">
 
                         <div
-                            class="
-                                h-full
-                                ${percentual > 80
-                                    ? "bg-red-500"
-                                    : percentual > 60
-                                        ? "bg-yellow-500"
-                                        : "bg-cyan-500"}
-                            "
-                            style="width:${Math.min(percentual, 100)}%">
+                            class="person-avatar"
+                            style="
+                                background:
+                                ${corAvatar(index)};
+                            ">
+
+                            ${inicialNome(
+                                pessoa.nome
+                            )}
+
+                        </div>
+
+                        <div>
+
+                            <div class="
+                                font-bold
+                            ">
+
+                                ${pessoa.nome}
+
+                            </div>
+
+                            <div class="
+                                text-sm
+                                text-slate-400
+                            ">
+
+                                ${formatarMoeda(
+                                    pessoa.salario
+                                )}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="
+                        space-y-2 text-sm
+                    ">
+
+                        <div class="
+                            flex-between
+                        ">
+
+                            <span>
+                                Gastos
+                            </span>
+
+                            <strong class="
+                                text-red-400
+                            ">
+
+                                ${formatarMoeda(
+                                    gastos
+                                )}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="
+                            flex-between
+                        ">
+
+                            <span>
+                                Sobra
+                            </span>
+
+                            <strong class="
+                                text-emerald-400
+                            ">
+
+                                ${formatarMoeda(
+                                    sobra
+                                )}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="
+                            flex-between
+                        ">
+
+                            <span>
+                                Livre por dia
+                            </span>
+
+                            <strong>
+
+                                ${formatarMoeda(
+                                    livreDia
+                                )}
+
+                            </strong>
+
                         </div>
 
                     </div>
 
                 </div>
-
-            </div>
-        `;
-    });
+            `;
+        }
+    );
 }
 
-function renderizarDashboardContas() {
-
-    const contas =
-        obterContasMesAtual()
-            .sort((a, b) =>
-                new Date(b.data) - new Date(a.data)
-            )
-            .slice(0, 8);
+function renderizarUltimasContas() {
 
     const container =
-        document.getElementById("dashboardContas");
+        document.getElementById(
+            "dashboardContas"
+        );
 
     if (!container)
         return;
+
+    const contas = [
+
+        ...obterContasFixasMes(
+            appState.mesAtual
+        ),
+
+        ...obterContasVariaveisMes(
+            appState.mesAtual
+        )
+    ];
 
     container.innerHTML = "";
 
     if (contas.length === 0) {
 
         container.innerHTML = `
-            <p class="text-slate-400">
-                Nenhuma conta neste período.
-            </p>
+            <div class="text-slate-400">
+                Nenhuma conta encontrada.
+            </div>
         `;
 
         return;
     }
 
-    contas.forEach(conta => {
+    contas
+        .slice(-6)
+        .reverse()
+        .forEach(conta => {
 
-        container.innerHTML += `
-            <div class="
-                bg-slate-900 rounded-2xl p-4
-                border border-slate-800
-            ">
-
-                <div class="flex justify-between items-start gap-4">
+            container.innerHTML += `
+                <div class="
+                    flex-between
+                    border-b
+                    border-slate-800
+                    pb-3
+                ">
 
                     <div>
 
-                        <div class="flex items-center gap-2 flex-wrap">
+                        <div class="
+                            font-semibold
+                        ">
 
-                            <h4 class="font-black">
-                                ${conta.nome}
-                            </h4>
-
-                            <span class="
-                                text-xs px-2 py-1 rounded-full
-                                bg-slate-700
-                            ">
-                                ${conta.categoria || "Outros"}
-                            </span>
+                            ${conta.nome}
 
                         </div>
 
-                        <div class="mt-2 text-sm text-slate-400 space-y-1">
+                        <div class="
+                            text-xs
+                            text-slate-400
+                        ">
 
-                            <p>
-                                📅 ${formatarData(conta.data)}
-                            </p>
-
-                            <p>
-                                ${conta.pago ? "✅ Pago" : "🕒 Pendente"}
-                            </p>
+                            ${
+                                conta.categoria
+                                || "Outros"
+                            }
 
                         </div>
 
                     </div>
 
-                    <div class="text-right">
+                    <strong class="
+                        text-red-400
+                    ">
 
-                        <h4 class="font-black">
-                            ${formatarMoeda(conta.valor)}
-                        </h4>
+                        ${formatarMoeda(
+                            conta.valor
+                            || conta.valorParcela
+                        )}
 
-                    </div>
+                    </strong>
 
                 </div>
-
-            </div>
-        `;
-    });
-}
-
-function atualizarTexto(id, valor) {
-
-    const elemento =
-        document.getElementById(id);
-
-    if (!elemento)
-        return;
-
-    elemento.innerText = valor;
+            `;
+        });
 }

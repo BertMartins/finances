@@ -1,88 +1,34 @@
-// js/pessoas.js
-
-function adicionarPessoa() {
-
-    const nome =
-        document.getElementById("nomePessoa")
-        .value
-        .trim();
-
-    const salario = Number(
-        document.getElementById("salarioPessoa").value
-    );
-
-    if (!nome || salario <= 0) {
-
-        alert("Preencha os campos corretamente.");
-
-        return;
-    }
-
-    const pessoas = obterPessoas();
-
-    pessoas.push({
-        id: gerarId(),
-        nome,
-        salario
-    });
-
-    salvarPessoas(pessoas);
-
-    document.getElementById("nomePessoa").value = "";
-    document.getElementById("salarioPessoa").value = "";
-
-    renderizarPessoas();
-
-    if (typeof renderizarDashboard === "function") {
-        renderizarDashboard();
-    }
-}
-
-function removerPessoa(id) {
-
-    let pessoas = obterPessoas();
-
-    pessoas = pessoas.filter(x => x.id !== id);
-
-    salvarPessoas(pessoas);
-
-    // REMOVE CONTAS DA PESSOA
-
-    let contas = obterContas();
-
-    contas = contas.filter(
-        x => x.pessoaId !== id
-    );
-
-    salvarContas(contas);
-
-    renderizarPessoas();
-
-    if (typeof renderizarDashboard === "function") {
-        renderizarDashboard();
-    }
-}
-
 function renderizarPessoas() {
 
     const container =
-        document.getElementById("listaPessoas");
+        document.getElementById(
+            "listaPessoas"
+        );
 
     if (!container)
         return;
 
-    const pessoas = obterPessoas();
+    const pessoas =
+        obterPessoas();
 
     container.innerHTML = "";
 
     if (pessoas.length === 0) {
 
         container.innerHTML = `
-            <div class="card col-span-full">
+            <div class="card">
 
-                <p class="text-slate-400">
-                    Nenhuma pessoa cadastrada.
-                </p>
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        👥
+                    </div>
+
+                    <div class="empty-title">
+                        Nenhuma pessoa cadastrada
+                    </div>
+
+                </div>
 
             </div>
         `;
@@ -90,35 +36,291 @@ function renderizarPessoas() {
         return;
     }
 
-    pessoas.forEach(pessoa => {
+    pessoas.forEach((pessoa, index) => {
 
         container.innerHTML += `
             <div class="card">
 
-                <div class="flex justify-between items-start">
+                <div class="
+                    flex-between
+                ">
 
-                    <div>
+                    <div class="
+                        flex items-center
+                        gap-12
+                    ">
 
-                        <h3 class="text-2xl font-black">
-                            ${pessoa.nome}
-                        </h3>
+                        <div
+                            class="person-avatar"
+                            style="
+                                background:
+                                ${corAvatar(index)};
+                            ">
 
-                        <p class="text-slate-400 mt-2">
-                            Salário:
-                            ${formatarMoeda(pessoa.salario)}
-                        </p>
+                            ${inicialNome(
+                                pessoa.nome
+                            )}
+
+                        </div>
+
+                        <div>
+
+                            <div class="
+                                list-title
+                            ">
+
+                                ${escaparHtml(
+                                    pessoa.nome
+                                )}
+
+                            </div>
+
+                            <div class="
+                                list-sub
+                            ">
+
+                                Salário:
+                                ${formatarMoeda(
+                                    pessoa.salario
+                                )}
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                    <button
-                        onclick="removerPessoa('${pessoa.id}')"
-                        class="bg-red-500 hover:bg-red-400 px-3 py-2 rounded-xl">
-                        ✕
-                    </button>
+                    <div class="
+                        list-actions
+                    ">
+
+                        <button
+                            class="btn-icon"
+                            onclick="
+                                abrirModalPessoa(
+                                    '${pessoa.id}'
+                                )
+                            ">
+
+                            ✏️
+
+                        </button>
+
+                        <button
+                            class="btn-icon"
+                            onclick="
+                                removerPessoa(
+                                    '${pessoa.id}'
+                                )
+                            ">
+
+                            🗑️
+
+                        </button>
+
+                    </div>
 
                 </div>
 
             </div>
         `;
+    });
+}
+
+function abrirModalPessoa(
+    pessoaId = null
+) {
+
+    const pessoa =
+        obterPessoas()
+            .find(
+                x =>
+                    x.id === pessoaId
+            );
+
+    abrirModal({
+
+        titulo:
+            pessoa
+                ? "Editar Pessoa"
+                : "Nova Pessoa",
+
+        conteudo: `
+            <div class="space-y-4">
+
+                <div>
+
+                    <label>
+                        Nome
+                    </label>
+
+                    <input
+                        id="nomePessoaModal"
+                        type="text"
+                        class="input"
+                        value="
+                            ${
+                                pessoa?.nome || ""
+                            }
+                        "
+                    />
+
+                </div>
+
+                <div>
+
+                    <label>
+                        Salário
+                    </label>
+
+                    <input
+                        id="salarioPessoaModal"
+                        type="number"
+                        class="input"
+                        value="
+                            ${
+                                pessoa?.salario || ""
+                            }
+                        "
+                    />
+
+                </div>
+
+            </div>
+        `,
+
+        footer: `
+            <button
+                class="btn btn-secondary"
+                onclick="fecharModal()">
+
+                Cancelar
+
+            </button>
+
+            <button
+                class="btn btn-primary"
+                onclick="
+                    salvarPessoaModal(
+                        '${
+                            pessoaId || ""
+                        }'
+                    )
+                ">
+
+                Salvar
+
+            </button>
+        `
+    });
+}
+
+function salvarPessoaModal(
+    pessoaId
+) {
+
+    const nome =
+        document.getElementById(
+            "nomePessoaModal"
+        ).value.trim();
+
+    const salario =
+        Number(
+            document.getElementById(
+                "salarioPessoaModal"
+            ).value
+        );
+
+    if (!nome) {
+
+        mostrarToast(
+            "Informe o nome.",
+            "error"
+        );
+
+        return;
+    }
+
+    const pessoas =
+        obterPessoas();
+
+    if (pessoaId) {
+
+        const pessoa =
+            pessoas.find(
+                x =>
+                    x.id === pessoaId
+            );
+
+        pessoa.nome = nome;
+
+        pessoa.salario = salario;
+    }
+    else {
+
+        pessoas.push({
+
+            id: gerarId(),
+
+            nome,
+
+            salario
+        });
+    }
+
+    salvarPessoas(
+        pessoas
+    );
+
+    fecharModal();
+
+    renderizarPessoas();
+
+    renderizarDashboard();
+
+    mostrarToast(
+        "Pessoa salva.",
+        "success"
+    );
+}
+
+function removerPessoa(
+    pessoaId
+) {
+
+    confirmarAcao({
+
+        titulo:
+            "Remover Pessoa",
+
+        mensagem:
+            "Deseja remover essa pessoa?",
+
+        confirmarTexto:
+            "Remover",
+
+        onConfirmar: () => {
+
+            const pessoas =
+                obterPessoas()
+                    .filter(
+                        x =>
+                            x.id !==
+                            pessoaId
+                    );
+
+            salvarPessoas(
+                pessoas
+            );
+
+            renderizarPessoas();
+
+            renderizarDashboard();
+
+            mostrarToast(
+                "Pessoa removida.",
+                "success"
+            );
+        }
     });
 }

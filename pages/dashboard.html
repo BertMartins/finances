@@ -1,98 +1,124 @@
-<!-- pages/dashboard.html -->
+<div class="metrics-grid">
 
-<div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+    <div class="card metric-card c-green">
 
-    <div>
+        <div class="metric-icon green">
+            💰
+        </div>
 
-        <h2 class="text-3xl font-black">
-            Dashboard Financeiro
-        </h2>
-
-        <p class="text-slate-400 mt-1">
-            Visão geral das finanças familiares
-        </p>
-
-    </div>
-
-    <div class="flex items-center gap-3">
-
-        <select
-            id="mesSelecionado"
-            class="input w-[180px]"
-            onchange="renderizarDashboard()">
-
-        </select>
-
-    </div>
-
-</div>
-
-<div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
-
-    <div class="card">
-
-        <p class="text-slate-400 text-sm">
+        <div class="metric-label">
             Total Salários
-        </p>
+        </div>
 
-        <h2 id="totalSalarios"
-            class="text-4xl font-black mt-3">
+        <div
+            id="totalSalarios"
+            class="metric-value">
+
             R$ 0,00
-        </h2>
+
+        </div>
 
     </div>
 
-    <div class="card">
+    <div class="card metric-card c-blue">
 
-        <p class="text-slate-400 text-sm">
-            Contas Compartilhadas
-        </p>
+        <div class="metric-icon blue">
+            🏠
+        </div>
 
-        <h2 id="totalCompartilhado"
-            class="text-4xl font-black mt-3 text-cyan-400">
+        <div class="metric-label">
+            Contas Fixas
+        </div>
+
+        <div
+            id="totalContasFixas"
+            class="metric-value">
+
             R$ 0,00
-        </h2>
+
+        </div>
 
     </div>
 
-    <div class="card">
+    <div class="card metric-card c-purple">
 
-        <p class="text-slate-400 text-sm">
-            Total de Gastos
-        </p>
+        <div class="metric-icon purple">
+            💳
+        </div>
 
-        <h2 id="totalGastos"
-            class="text-4xl font-black mt-3 text-red-400">
+        <div class="metric-label">
+            Contas Variáveis
+        </div>
+
+        <div
+            id="totalContasVariaveis"
+            class="metric-value">
+
             R$ 0,00
-        </h2>
+
+        </div>
 
     </div>
 
-    <div class="card">
+    <div class="card metric-card c-red">
 
-        <p class="text-slate-400 text-sm">
+        <div class="metric-icon red">
+            📉
+        </div>
+
+        <div class="metric-label">
+            Total Gastos
+        </div>
+
+        <div
+            id="totalGastos"
+            class="metric-value">
+
+            R$ 0,00
+
+        </div>
+
+    </div>
+
+    <div class="card metric-card c-green">
+
+        <div class="metric-icon green">
+            🐷
+        </div>
+
+        <div class="metric-label">
             Sobra Familiar
-        </p>
+        </div>
 
-        <h2 id="sobraFamiliar"
-            class="text-4xl font-black mt-3 text-emerald-400">
+        <div
+            id="sobraFamiliar"
+            class="metric-value">
+
             R$ 0,00
-        </h2>
+
+        </div>
 
     </div>
 
 </div>
 
-<div class="mt-8 grid lg:grid-cols-2 gap-6">
+<div class="dash-grid mt-16">
 
     <div class="card">
 
-        <h3 class="text-2xl font-black mb-6">
-            👨‍👩‍👧 Pessoas
-        </h3>
+        <div class="card-header">
 
-        <div id="dashboardPessoas"
-             class="space-y-4">
+            <div class="card-title">
+                Gastos por Categoria
+            </div>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas
+                id="graficoCategorias">
+            </canvas>
 
         </div>
 
@@ -100,15 +126,71 @@
 
     <div class="card">
 
-        <h3 class="text-2xl font-black mb-6">
-            💸 Últimas Contas
-        </h3>
+        <div class="card-header">
 
-        <div id="dashboardContas"
-             class="space-y-4">
+            <div class="card-title">
+                Resumo Financeiro
+            </div>
+
+        </div>
+
+        <div class="chart-container">
+
+            <canvas
+                id="graficoResumo">
+            </canvas>
 
         </div>
 
     </div>
 
 </div>
+
+<div class="mt-16">
+
+    <div class="card-header">
+
+        <div class="card-title">
+            Resumo por Pessoa
+        </div>
+
+    </div>
+
+    <div
+        id="dashboardPessoas"
+        class="person-cards">
+
+    </div>
+
+</div>
+
+<div class="mt-16">
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <div class="card-title">
+                Últimas Movimentações
+            </div>
+
+        </div>
+
+        <div
+            id="dashboardMovimentacoes">
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    renderizarDashboard();
+
+    renderizarGraficoCategorias();
+
+    renderizarGraficoResumo();
+
+</script>

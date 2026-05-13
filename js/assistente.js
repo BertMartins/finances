@@ -1,322 +1,442 @@
 // js/assistente.js
 
-window.addEventListener("load", async () => {
-    await verificarApiKey();
-});
+let contasDetectadasIA = [];
 
-async function verificarApiKey() {
-    const chave = obterApiKey();
+function inicializarAssistente() {
+
+    verificarApiKey();
+}
+
+function verificarApiKey() {
+
+    const chave =
+        obterApiKey();
 
     if (chave)
         return;
 
-    const modal = `
-        <div
-            id="modalApiKey"
-            class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+    abrirModal({
 
-            <div class="bg-slate-900 border border-slate-700 rounded-3xl p-8 w-full max-w-xl shadow-2xl">
+        titulo:
+            "Configurar API Key",
 
-                <h2 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
-                    🔑 Configurar API Key
-                </h2>
+        conteudo: `
+            <div class="space-y-4">
 
-                <p class="text-slate-400 mt-3">
+                <p class="text-muted">
+
                     Informe sua chave da API da Poe.
+
                 </p>
 
                 <input
                     id="inputApiKey"
                     type="password"
-                    placeholder="Cole sua API Key..."
-                    class="input mt-6"
+                    class="input"
+                    placeholder="Cole sua API Key"
                 />
 
-                <button
-                    onclick="salvarChaveApi()"
-                    class="btn-primary w-full mt-5">
-                    Salvar Chave
-                </button>
-
             </div>
+        `,
 
-        </div>
-    `;
+        footer: `
+            <button
+                class="btn btn-primary"
+                onclick="salvarChaveIA()">
 
-    document.body.insertAdjacentHTML("beforeend", modal);
+                Salvar
+
+            </button>
+        `
+    });
 }
 
-function salvarChaveApi() {
-    const chave = document.getElementById("inputApiKey").value;
+function salvarChaveIA() {
+
+    const chave =
+        document.getElementById(
+            "inputApiKey"
+        ).value.trim();
 
     if (!chave) {
-        alert("Informe a chave.");
+
+        mostrarToast(
+            "Informe a chave.",
+            "error"
+        );
+
         return;
     }
 
-    salvarApiKey(chave);
-    document.getElementById("modalApiKey").remove();
+    salvarApiKey(
+        chave
+    );
+
+    fecharModal();
+
+    mostrarToast(
+        "API configurada.",
+        "success"
+    );
 }
 
-async function enviarPergunta() {
-    const input = document.getElementById("inputIA");
-    const pergunta = input.value.trim();
+async function enviarPerguntaIA() {
+
+    const input =
+        document.getElementById(
+            "inputIA"
+        );
+
+    const pergunta =
+        input.value.trim();
 
     if (!pergunta)
         return;
 
-    adicionarMensagem(pergunta, "usuario");
+    adicionarMensagemIA(
+        pergunta,
+        "usuario"
+    );
+
     input.value = "";
 
-    const processou = processarCadastroContas(pergunta);
+    const contas =
+        detectarContasTexto(
+            pergunta
+        );
 
-    if (processou) {
+    if (contas.length > 0) {
+
+        contasDetectadasIA =
+            contas;
+
+        adicionarMensagemIA(
+            gerarHtmlContasDetectadas(
+                contas
+            ),
+            "ia"
+        );
+
         return;
     }
 
-    adicionarTyping();
+    adicionarTypingIA();
 
     try {
-        const resposta = await perguntarIA(pergunta);
-        removerTyping();
-        adicionarMensagem(resposta, "ia");
+
+        const resposta =
+            await perguntarIA(
+                pergunta
+            );
+
+        removerTypingIA();
+
+        adicionarMensagemIA(
+            resposta,
+            "ia"
+        );
     }
-    catch (erro) {
-        removerTyping();
-        adicionarMensagem("Erro ao comunicar com a IA 😭", "ia");
-        console.error(erro);
-    }
-}
+    catch {
 
-function processarCadastroContas(texto) {
-    const textoLower = texto.toLowerCase();
+        removerTypingIA();
 
-    if (
-        textoLower.includes("contas fixas família") ||
-        textoLower.includes("contas familia")
-    ) {
-        cadastrarContasCompartilhadas(texto);
-        return true;
-    }
-
-    if (textoLower.includes("contas fixas individual")) {
-        cadastrarContasIndividuais(texto);
-        return true;
-    }
-
-    return false;
-}
-
-function cadastrarContasCompartilhadas(texto) {
-    const linhas = texto.split("\n");
-    const contas = obterContas();
-    let adicionadas = 0;
-
-    linhas.forEach(linha => {
-        const match = linha.match(/(.+?)[:\-]?\s*R\$\s*(\d+[.,]?\d*)/i);
-
-        if (!match)
-            return;
-
-        const nome = match[1].replace(/#/g, "").trim();
-        const valor = Number(match[2].replace(",", "."));
-
-        if (!nome || !valor)
-            return;
-
-        contas.push({
-            id: gerarId(),
-            nome,
-            valor,
-            tipo: "compartilhada",
-            pessoaId: null
-        });
-
-        adicionadas++;
-    });
-
-    salvarContas(contas);
-
-    adicionarMensagem(`✅ **${adicionadas} contas compartilhadas** cadastradas com sucesso.`, "ia");
-
-    if (typeof renderizarContas === "function") {
-        renderizarContas();
-    }
-
-    if (typeof renderizarDashboard === "function") {
-        renderizarDashboard();
+        adicionarMensagemIA(
+            "Erro ao comunicar com a IA.",
+            "ia"
+        );
     }
 }
 
-function cadastrarContasIndividuais(texto) {
-    const linhas = texto.split("\n");
-    const primeiraLinha = linhas[0];
-    const nomePessoa = primeiraLinha.replace(/contas fixas individual/i, "").trim();
-    const pessoas = obterPessoas();
+function adicionarMensagemIA(
+    mensagem,
+    tipo
+) {
 
-    const pessoa = pessoas.find(x => x.nome.toLowerCase() === nomePessoa.toLowerCase());
+    const chat =
+        document.getElementById(
+            "chatIA"
+        );
 
-    if (!pessoa) {
-        adicionarMensagem(`Não encontrei a pessoa: **${nomePessoa}**`, "ia");
+    if (!chat)
         return;
-    }
 
-    const contas = obterContas();
-    let adicionadas = 0;
+    const isIA =
+        tipo === "ia";
+
+    chat.innerHTML += `
+        <div class="
+            ai-msg
+            ${isIA ? "bot" : "user"}
+        ">
+
+            <div class="ai-msg-avatar">
+
+                ${
+                    isIA
+                        ? "🤖"
+                        : "👤"
+                }
+
+            </div>
+
+            <div class="ai-msg-bubble">
+
+                ${mensagem}
+
+            </div>
+
+        </div>
+    `;
+
+    chat.scrollTop =
+        chat.scrollHeight;
+}
+
+function adicionarTypingIA() {
+
+    const chat =
+        document.getElementById(
+            "chatIA"
+        );
+
+    if (!chat)
+        return;
+
+    chat.innerHTML += `
+        <div
+            id="typingIA"
+            class="ai-msg bot">
+
+            <div class="ai-msg-avatar">
+                🤖
+            </div>
+
+            <div class="ai-msg-bubble">
+
+                <div class="ai-typing">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+    chat.scrollTop =
+        chat.scrollHeight;
+}
+
+function removerTypingIA() {
+
+    document.getElementById(
+        "typingIA"
+    )?.remove();
+}
+
+function detectarContasTexto(
+    texto
+) {
+
+    const linhas =
+        texto.split("\n");
+
+    const contas = [];
+
+    const regex =
+        /^(.+?)\s*[:\-]\s*R?\$?\s*([\d.,]+)/i;
 
     linhas.forEach(linha => {
-        const match = linha.match(/(.+?)[:\-]?\s*R\$\s*(\d+[.,]?\d*)/i);
+
+        const match =
+            linha
+                .trim()
+                .match(regex);
 
         if (!match)
             return;
 
-        const nome = match[1].replace(/#/g, "").trim();
-        const valor = Number(match[2].replace(",", "."));
-
-        if (!nome || !valor)
-            return;
-
         contas.push({
-            id: gerarId(),
-            nome,
-            valor,
-            tipo: "individual",
-            pessoaId: pessoa.id
-        });
 
-        adicionadas++;
+            nome:
+                match[1].trim(),
+
+            valor:
+                Number(
+                    match[2]
+                        .replace(".", "")
+                        .replace(",", ".")
+                )
+        });
     });
 
-    salvarContas(contas);
-
-    adicionarMensagem(`✅ **${adicionadas} contas individuais** cadastradas para **${pessoa.nome}**.`, "ia");
-
-    if (typeof renderizarContas === "function") {
-        renderizarContas();
-    }
-
-    if (typeof renderizarDashboard === "function") {
-        renderizarDashboard();
-    }
+    return contas;
 }
 
-function perguntaRapida(texto) {
-    document.getElementById("inputIA").value = texto;
-    enviarPergunta();
-}
+function gerarHtmlContasDetectadas(
+    contas
+) {
 
-// NOVA FUNÇÃO: Converte o Markdown da IA para HTML
-function formatarMarkdown(texto) {
-    if (!texto) return "";
-    
-    let formatado = texto
-        .replace(/### (.*?)(?:\n|$)/g, '<h3>$1</h3>') // Transforma ### em H3
-        .replace(/## (.*?)(?:\n|$)/g, '<h2>$1</h2>')  // Transforma ## em H2
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>') // Transforma **negrito**
-        .replace(/---/g, '<hr>'); // Transforma linhas divisórias
+    return `
+        <div class="ai-parsed-bills">
 
-    // Transforma itens de lista (- item)
-    formatado = formatado.replace(/- (.*?)(?:\n|$)/g, '<ul><li>$1</li></ul>');
-    
-    // Junta listas adjacentes para o HTML ficar mais limpo
-    formatado = formatado.replace(/<\/ul>\n?<ul>/g, '');
+            <h4>
+                📋 Contas Detectadas
+            </h4>
 
-    // Converte quebras de linha restantes em <br>
-    formatado = formatado.replace(/\n/g, '<br>');
+            ${
+                contas.map(conta => `
+                    <div class="ai-parsed-item">
 
-    return formatado;
-}
+                        <span>
 
-function adicionarMensagem(texto, tipo) {
-    const chat = document.getElementById("chatIA");
-    const isIA = tipo === "ia";
+                            ${conta.nome}
 
-    // Se for IA, formata o texto com a nova função. Se for usuário, mantém normal.
-    let conteudoFinal = isIA ? formatarMarkdown(texto) : texto;
+                        </span>
 
-    // Classes atualizadas para combinar com o novo design
-    const classesIA = "bg-slate-800 border border-slate-700 text-slate-200 rounded-2xl rounded-tl-sm p-5 max-w-3xl shadow-md ai-content";
-    const classesUsuario = "bg-cyan-600 text-white rounded-2xl rounded-tr-sm p-4 max-w-xl shadow-md";
+                        <span>
 
-    chat.innerHTML += `
-        <div class="flex ${isIA ? "" : "justify-end"}">
-            <div class="${isIA ? classesIA : classesUsuario}">
-                ${conteudoFinal}
-            </div>
+                            ${formatarMoeda(
+                                conta.valor
+                            )}
+
+                        </span>
+
+                    </div>
+                `).join("")
+            }
+
+            <button
+                class="
+                    btn btn-primary
+                    mt-16
+                "
+                onclick="
+                    adicionarContasDetectadas()
+                ">
+
+                Adicionar Contas
+
+            </button>
+
         </div>
     `;
-
-    chat.scrollTop = chat.scrollHeight;
 }
 
-function adicionarTyping() {
-    const chat = document.getElementById("chatIA");
+function adicionarContasDetectadas() {
 
-    chat.innerHTML += `
-        <div id="typingIA" class="flex">
-            <div class="bg-slate-800 border border-slate-700 text-slate-400 rounded-2xl rounded-tl-sm p-5 shadow-md flex items-center gap-2">
-                <span class="animate-pulse">Pensando...</span>
-            </div>
-        </div>
-    `;
+    const contas =
+        obterContasFixas();
 
-    chat.scrollTop = chat.scrollHeight;
+    contasDetectadasIA
+        .forEach(conta => {
+
+            contas.push({
+
+                id: gerarId(),
+
+                nome:
+                    conta.nome,
+
+                valor:
+                    conta.valor,
+
+                categoria:
+                    "Outros",
+
+                dataInicio:
+                    appState.mesAtual,
+
+                tipo:
+                    "compartilhada",
+
+                pessoaId:
+                    null,
+
+                observacao:
+                    "Adicionado via IA"
+            });
+        });
+
+    salvarContasFixas(
+        contas
+    );
+
+    mostrarToast(
+        "Contas adicionadas.",
+        "success"
+    );
+
+    contasDetectadasIA = [];
 }
 
-function removerTyping() {
-    const typing = document.getElementById("typingIA");
-    if (typing)
-        typing.remove();
-}
+async function perguntarIA(
+    pergunta
+) {
 
-async function perguntarIA(pergunta) {
-    const chave = obterApiKey();
-    const pessoas = obterPessoas();
-    const contas = obterContas();
+    const chave =
+        obterApiKey();
 
     const contexto = `
-        Você é um assistente financeiro familiar.
-
-        Dados atuais:
+        Você é um assistente
+        financeiro familiar.
 
         Pessoas:
-        ${JSON.stringify(pessoas)}
+        ${JSON.stringify(
+            obterPessoas()
+        )}
 
-        Contas:
-        ${JSON.stringify(contas)}
+        Contas Fixas:
+        ${JSON.stringify(
+            obterContasFixas()
+        )}
+
+        Contas Variáveis:
+        ${JSON.stringify(
+            obterContasVariaveis()
+        )}
 
         Pergunta:
         ${pergunta}
 
-        Responda de forma simples,
-        amigável e objetiva. Use formatação Markdown (## para títulos, ** para negrito, - para listas).
+        Responda em português.
     `;
 
-    const response = await fetch(
-        "https://api.poe.com/v1/responses",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${chave}`
-            },
-            body: JSON.stringify({
-                model: "gpt-5.3-codex",
-                input: contexto
-            })
-        }
-    );
+    const response =
+        await fetch(
+            "https://api.poe.com/v1/responses",
+            {
+                method: "POST",
 
-    if (!response.ok) {
-        throw new Error("Erro na API");
-    }
+                headers: {
+                    "Content-Type":
+                        "application/json",
 
-    const data = await response.json();
-    console.log(data);
+                    "Authorization":
+                        `Bearer ${chave}`
+                },
 
-    // AJUSTA ISSO DEPOIS dependendo da resposta da API da Poe
+                body: JSON.stringify({
+
+                    model:
+                        "gpt-5.3-codex",
+
+                    input:
+                        contexto
+                })
+            }
+        );
+
+    const data =
+        await response.json();
+
     return (
-        data.output?.[0]?.content?.[0]?.text
-        || "Não consegui responder."
+        data.output?.[0]
+            ?.content?.[0]
+            ?.text
+        || "Sem resposta."
     );
 }

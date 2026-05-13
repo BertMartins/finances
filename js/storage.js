@@ -1,46 +1,74 @@
 // js/storage.js
 
 const STORAGE_KEYS = {
-    pessoas: "financas_pessoas",
-    contas: "financas_contas",
-    configuracoes: "financas_configuracoes",
-    apiKey: "financas_poe_api_key"
+
+    pessoas:
+        "financas_pessoas",
+
+    contasFixas:
+        "financas_contas_fixas",
+
+    contasVariaveis:
+        "financas_contas_variaveis",
+
+    configuracoes:
+        "financas_configuracoes",
+
+    apiKey:
+        "financas_poe_api_key"
 };
 
 function iniciarStorage() {
 
-    if (!localStorage.getItem(STORAGE_KEYS.pessoas)) {
+    Object
+        .values(STORAGE_KEYS)
+        .forEach(chave => {
 
-        localStorage.setItem(
-            STORAGE_KEYS.pessoas,
-            JSON.stringify([])
-        );
-    }
+            if (
+                localStorage
+                    .getItem(chave)
+            ) {
+                return;
+            }
 
-    if (!localStorage.getItem(STORAGE_KEYS.contas)) {
+            let valorInicial = [];
 
-        localStorage.setItem(
-            STORAGE_KEYS.contas,
-            JSON.stringify([])
-        );
-    }
+            if (
+                chave ===
+                STORAGE_KEYS.configuracoes
+            ) {
 
-    if (!localStorage.getItem(STORAGE_KEYS.configuracoes)) {
+                valorInicial = {
+                    divisaoPorSalario: false,
+                    tema: "dark"
+                };
+            }
 
-        localStorage.setItem(
-            STORAGE_KEYS.configuracoes,
-            JSON.stringify({
-                divisaoPorSalario: false
-            })
-        );
-    }
+            if (
+                chave ===
+                STORAGE_KEYS.apiKey
+            ) {
+                return;
+            }
+
+            localStorage.setItem(
+                chave,
+                JSON.stringify(
+                    valorInicial
+                )
+            );
+        });
 }
 
-function parseSeguro(valor, fallback) {
+function parseSeguro(
+    valor,
+    fallback
+) {
 
     try {
 
-        return JSON.parse(valor) || fallback;
+        return JSON.parse(valor)
+            || fallback;
     }
     catch {
 
@@ -48,10 +76,16 @@ function parseSeguro(valor, fallback) {
     }
 }
 
+//
+// PESSOAS
+//
+
 function obterPessoas() {
 
     return parseSeguro(
-        localStorage.getItem(STORAGE_KEYS.pessoas),
+        localStorage.getItem(
+            STORAGE_KEYS.pessoas
+        ),
         []
     );
 }
@@ -64,37 +98,79 @@ function salvarPessoas(lista) {
     );
 }
 
-function obterContas() {
+//
+// CONTAS FIXAS
+//
+
+function obterContasFixas() {
 
     return parseSeguro(
-        localStorage.getItem(STORAGE_KEYS.contas),
+        localStorage.getItem(
+            STORAGE_KEYS.contasFixas
+        ),
         []
     );
 }
 
-function salvarContas(lista) {
+function salvarContasFixas(lista) {
 
     localStorage.setItem(
-        STORAGE_KEYS.contas,
+        STORAGE_KEYS.contasFixas,
         JSON.stringify(lista)
     );
 }
 
+//
+// CONTAS VARIÁVEIS
+//
+
+function obterContasVariaveis() {
+
+    return parseSeguro(
+        localStorage.getItem(
+            STORAGE_KEYS.contasVariaveis
+        ),
+        []
+    );
+}
+
+function salvarContasVariaveis(lista) {
+
+    localStorage.setItem(
+        STORAGE_KEYS.contasVariaveis,
+        JSON.stringify(lista)
+    );
+}
+
+//
+// CONFIGURAÇÕES
+//
+
 function obterConfiguracoes() {
 
     return parseSeguro(
-        localStorage.getItem(STORAGE_KEYS.configuracoes),
+        localStorage.getItem(
+            STORAGE_KEYS.configuracoes
+        ),
         {}
     );
 }
 
-function salvarConfiguracoes(config) {
+function salvarConfiguracoes(
+    configuracoes
+) {
 
     localStorage.setItem(
         STORAGE_KEYS.configuracoes,
-        JSON.stringify(config)
+        JSON.stringify(
+            configuracoes
+        )
     );
 }
+
+//
+// API KEY
+//
 
 function obterApiKey() {
 
@@ -111,13 +187,119 @@ function salvarApiKey(chave) {
     );
 }
 
-function limparStorage() {
+//
+// EXPORTAR DADOS
+//
 
-    Object.values(STORAGE_KEYS).forEach(chave => {
-        localStorage.removeItem(chave);
-    });
+function exportarDados() {
 
-    iniciarStorage();
+    const dados = {
+
+        versao: 1,
+
+        exportadoEm:
+            new Date()
+                .toISOString(),
+
+        pessoas:
+            obterPessoas(),
+
+        contasFixas:
+            obterContasFixas(),
+
+        contasVariaveis:
+            obterContasVariaveis(),
+
+        configuracoes:
+            obterConfiguracoes()
+    };
+
+    const blob =
+        new Blob(
+            [
+                JSON.stringify(
+                    dados,
+                    null,
+                    2
+                )
+            ],
+            {
+                type:
+                    "application/json"
+            }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download = `
+        financas_${
+            obterMesAtual()
+        }.json
+    `.trim();
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+}
+
+//
+// IMPORTAR DADOS
+//
+
+function importarDados(
+    dados
+) {
+
+    if (!dados)
+        return false;
+
+    if (
+        dados.pessoas
+    ) {
+
+        salvarPessoas(
+            dados.pessoas
+        );
+    }
+
+    if (
+        dados.contasFixas
+    ) {
+
+        salvarContasFixas(
+            dados.contasFixas
+        );
+    }
+
+    if (
+        dados.contasVariaveis
+    ) {
+
+        salvarContasVariaveis(
+            dados.contasVariaveis
+        );
+    }
+
+    if (
+        dados.configuracoes
+    ) {
+
+        salvarConfiguracoes(
+            dados.configuracoes
+        );
+    }
+
+    return true;
 }
 
 iniciarStorage();

@@ -1,49 +1,86 @@
-// js/tabs.js
+function toggleSidebar() {
 
-async function abrirPagina(pagina) {
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
 
-    const response =
-        await fetch(`pages/${pagina}.html`);
+    const overlay =
+        document.getElementById(
+            "sidebarOverlay"
+        );
 
-    const html =
-        await response.text();
+    if (!sidebar)
+        return;
 
-    document.getElementById("app").innerHTML =
-        html;
+    sidebar.classList.toggle(
+        "open"
+    );
 
-    atualizarTitulo(pagina);
-
-    inicializarPagina(pagina);
+    overlay?.classList.toggle(
+        "active"
+    );
 }
 
-function atualizarTitulo(pagina) {
+function fecharSidebar() {
 
-    const titulos = {
-        dashboard: "Dashboard",
-        pessoas: "Pessoas",
-        contas: "Contas",
-        assistente: "Assistente IA"
-    };
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
 
-    document.getElementById("tituloPagina").innerText =
-        titulos[pagina];
+    const overlay =
+        document.getElementById(
+            "sidebarOverlay"
+        );
+
+    sidebar?.classList.remove(
+        "open"
+    );
+
+    overlay?.classList.remove(
+        "active"
+    );
 }
 
-function inicializarPagina(pagina) {
+function abrirImportacao() {
 
-    switch (pagina) {
+    const input =
+        document.getElementById(
+            "inputImportarJson"
+        );
 
-        case "dashboard":
-            renderizarDashboard();
-            break;
+    input?.click();
+}
 
-        case "pessoas":
-            renderizarPessoas();
-            break;
+function atualizarTituloPagina(
+    titulo
+) {
 
-        case "contas":
-            renderizarContas();
-            carregarPessoasSelect();
-            break;
-    }
+    const elemento =
+        document.getElementById(
+            "tituloPagina"
+        );
+
+    if (!elemento)
+        return;
+
+    elemento.innerText =
+        titulo;
+}
+
+function navegarPara(
+    pagina,
+    titulo
+) {
+
+    atualizarTituloPagina(
+        titulo
+    );
+
+    abrirPagina(
+        pagina
+    );
+
+    fecharSidebar();
 }

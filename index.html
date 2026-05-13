@@ -1,263 +1,260 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Finanças Familiar</title>
+    <meta charset="UTF-8" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta
+        name="viewport"
+        content="
+            width=device-width,
+            initial-scale=1.0
+        "
+    />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"
-        rel="stylesheet">
+    <title>
+        FinFamily
+    </title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            /* TROQUEI */
-            overflow-x: hidden;
-            overflow-y: auto;
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    />
 
-            background: radial-gradient(circle at top right, #0f172a, #020617);
-        }
-
-        .menu-btn {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 12px;
-            text-align: left;
-            transition: all 0.3s ease;
-            background: transparent;
-            border: 1px solid transparent;
-            font-weight: 500;
-            color: #94a3b8;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .menu-btn:hover {
-            background: rgba(30, 41, 59, 0.8);
-            border-color: #334155;
-            color: #f8fafc;
-            transform: translateX(4px);
-        }
-
-        .card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(51, 65, 85, 0.5);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
-            border-color: rgba(51, 65, 85, 0.8);
-        }
-
-        .input {
-            width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 14px 16px;
-            outline: none;
-            color: #f8fafc;
-            transition: all 0.2s ease;
-            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-        }
-
-        .input:focus {
-            border-color: #22d3ee;
-            box-shadow:
-                0 0 0 3px rgba(34, 211, 238, 0.2),
-                inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
-            color: white;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);
-            filter: brightness(1.1);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #020617;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
-
-        /* ========================================= */
-        /* RESPONSIVIDADE */
-        /* ========================================= */
-
-        @media (max-width: 768px) {
-
-            .layout-container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100% !important;
-                height: auto;
-                border-right: none !important;
-                border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-                padding: 16px;
-            }
-
-            .sidebar nav {
-                display: flex;
-                gap: 10px;
-                overflow-x: auto;
-                overflow-y: hidden;
-                padding-bottom: 4px;
-            }
-
-            .sidebar nav::-webkit-scrollbar {
-                height: 4px;
-            }
-
-            .sidebar .menu-btn {
-                min-width: max-content;
-                width: auto;
-                flex-shrink: 0;
-            }
-
-            .topbar {
-                height: auto !important;
-                padding: 20px;
-            }
-
-            #app {
-                padding: 20px !important;
-            }
-
-            #tituloPagina {
-                font-size: 22px !important;
-            }
-
-            .card {
-                padding: 18px;
-                border-radius: 16px;
-            }
-
-            .btn-primary {
-                width: 100%;
-            }
-        }
-    </style>
 </head>
 
-<body class="text-white h-screen w-full">
+<body>
 
-    <div class="layout-container flex h-full w-full">
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar w-72 bg-slate-900/90 border-r border-slate-800/60 p-6 flex flex-col shadow-2xl z-10">
-
-            <div class="mb-10 pl-2">
-                <h1
-                    class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">
-                    💰 Finanças
-                </h1>
-
-                <p class="text-slate-400 text-sm mt-1 font-medium">
-                    Controle familiar
-                </p>
-            </div>
-
-            <nav class="space-y-2 flex-1">
-
-                <button onclick="abrirPagina('dashboard')" class="menu-btn">
-                    <span class="text-xl">📊</span> Dashboard
-                </button>
-
-                <button onclick="abrirPagina('pessoas')" class="menu-btn">
-                    <span class="text-xl">👨‍👩‍👧</span> Pessoas
-                </button>
-
-                <button onclick="abrirPagina('contas')" class="menu-btn">
-                    <span class="text-xl">💸</span> Contas
-                </button>
-
-                <button onclick="abrirPagina('assistente')" class="menu-btn">
-                    <span class="text-xl">🤖</span> Assistente IA
-                </button>
-
-            </nav>
-
-        </aside>
-
-        <!-- CONTEÚDO -->
-        <main class="flex-1 flex flex-col h-full relative">
-
-            <div
-                class="absolute top-0 left-0 w-full h-96 bg-cyan-900/10 blur-3xl rounded-full pointer-events-none">
-            </div>
-
-            <!-- TOPBAR -->
-            <header
-                class="topbar h-24 border-b border-slate-800/50 flex items-center px-10 bg-slate-950/50 backdrop-blur-sm z-10">
-
-                <h2 id="tituloPagina"
-                    class="text-2xl font-bold tracking-tight text-slate-100">
-                    Dashboard
-                </h2>
-
-            </header>
-
-            <!-- PAGE -->
-            <section id="app" class="p-10 flex-1 overflow-auto">
-                <!-- O conteúdo gerado pelo JS aparecerá aqui -->
-            </section>
-
-        </main>
+    <div id="sidebarOverlay">
 
     </div>
 
-    <!-- TODOS OS JS MANTIDOS -->
+    <aside id="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                💰
+            </div>
+
+            <div class="brand-text">
+
+                Fin<span>
+                    Family
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="sidebar-section">
+
+            MENU
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <button
+                data-menu="dashboard"
+                class="
+                    nav-item
+                    active
+                "
+                onclick="
+                    navegarPara(
+                        'dashboard'
+                    )
+                ">
+
+                📊 Dashboard
+
+            </button>
+
+            <button
+                data-menu="pessoas"
+                class="nav-item"
+                onclick="
+                    navegarPara(
+                        'pessoas'
+                    )
+                ">
+
+                👥 Pessoas
+
+            </button>
+
+            <button
+                data-menu="contasFixas"
+                class="nav-item"
+                onclick="
+                    navegarPara(
+                        'contasFixas'
+                    )
+                ">
+
+                🏠 Contas Fixas
+
+            </button>
+
+            <button
+                data-menu="contasVariaveis"
+                class="nav-item"
+                onclick="
+                    navegarPara(
+                        'contasVariaveis'
+                    )
+                ">
+
+                💳 Contas Variáveis
+
+            </button>
+
+            <button
+                data-menu="assistente"
+                class="nav-item"
+                onclick="
+                    navegarPara(
+                        'assistente'
+                    )
+                ">
+
+                🤖 Assistente IA
+
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <main id="main">
+
+        <header id="main-header">
+
+            <button
+                id="menuToggle">
+
+                ☰
+
+            </button>
+
+            <div
+                class="month-selector">
+
+                <button
+                    onclick="
+                        alterarMes(-1)
+                    ">
+
+                    ←
+
+                </button>
+
+                <span
+                    id="mesAtualTexto"
+                    class="month-label">
+
+                </span>
+
+                <button
+                    onclick="
+                        alterarMes(1)
+                    ">
+
+                    →
+
+                </button>
+
+            </div>
+
+        </header>
+
+        <div id="app">
+
+        </div>
+
+    </main>
+
+    <!-- MODAL -->
+
+    <div
+        id="modalOverlay"
+        class="modal-overlay">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h2
+                    id="modalTitulo">
+
+                </h2>
+
+                <button
+                    class="modal-close"
+                    onclick="
+                        fecharModal()
+                    ">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+            <div
+                id="modalConteudo"
+                class="modal-body">
+
+            </div>
+
+            <div
+                id="modalFooter"
+                class="modal-footer">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOAST -->
+
+    <div
+        id="toastContainer"
+        class="toast-container">
+
+    </div>
+
     <script src="js/storage.js"></script>
+
     <script src="js/utils.js"></script>
-    <script src="js/tabs.js"></script>
-    <script src="js/pessoas.js"></script>
-    <script src="js/contas.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/assistente.js"></script>
+
+    <script src="js/modal.js"></script>
+
+    <script src="js/toast.js"></script>
+
+    <script src="js/charts.js"></script>
+
+    <script src="js/router.js"></script>
+
     <script src="js/app.js"></script>
+
+    <script src="js/pessoas.js"></script>
+
+    <script src="js/contas-fixas.js"></script>
+
+    <script src="js/contas-variaveis.js"></script>
+
+    <script src="js/dashboard.js"></script>
+
+    <script src="js/assistente.js"></script>
 
 </body>
 
