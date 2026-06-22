@@ -15,17 +15,27 @@ function verificarApiKey() {
     if (chave)
         return;
 
+    abrirModalToken();
+}
+
+function configurarTokenIA() {
+
+    abrirModalToken();
+}
+
+function abrirModalToken() {
+
     abrirModal({
 
         titulo:
-            "Configurar API Key",
+            "Configurar Token da Poe",
 
         conteudo: `
             <div class="space-y-4">
 
                 <p class="text-muted">
 
-                    Informe sua chave da API da Poe.
+                    Informe seu token da API da Poe.
 
                 </p>
 
@@ -33,7 +43,7 @@ function verificarApiKey() {
                     id="inputApiKey"
                     type="password"
                     class="input"
-                    placeholder="Cole sua API Key"
+                    placeholder="Cole seu token aqui"
                 />
 
             </div>
@@ -162,6 +172,94 @@ async function enviarPerguntaIA() {
     }
 }
 
+function renderMarkdown(texto) {
+
+    const linhas =
+        texto.split("\n");
+
+    let html = "";
+    let emLista = false;
+
+    for (const linha of linhas) {
+
+        if (linha.startsWith("### ")) {
+
+            if (emLista) {
+                html += "</ul>";
+                emLista = false;
+            }
+
+            html += `<h3>${renderInline(linha.slice(4))}</h3>`;
+        }
+        else if (linha.startsWith("## ")) {
+
+            if (emLista) {
+                html += "</ul>";
+                emLista = false;
+            }
+
+            html += `<h2>${renderInline(linha.slice(3))}</h2>`;
+        }
+        else if (linha.startsWith("# ")) {
+
+            if (emLista) {
+                html += "</ul>";
+                emLista = false;
+            }
+
+            html += `<h1>${renderInline(linha.slice(2))}</h1>`;
+        }
+        else if (/^[-*] /.test(linha) || /^\d+\.\s/.test(linha)) {
+
+            if (!emLista) {
+                html += "<ul>";
+                emLista = true;
+            }
+
+            const conteudo =
+                linha
+                    .replace(/^[-*] /, "")
+                    .replace(/^\d+\.\s/, "");
+
+            html += `<li>${renderInline(conteudo)}</li>`;
+        }
+        else if (linha.trim() === "") {
+
+            if (emLista) {
+                html += "</ul>";
+                emLista = false;
+            }
+        }
+        else {
+
+            if (emLista) {
+                html += "</ul>";
+                emLista = false;
+            }
+
+            html += `<p>${renderInline(linha)}</p>`;
+        }
+    }
+
+    if (emLista)
+        html += "</ul>";
+
+    return html;
+}
+
+function renderInline(texto) {
+
+    return texto
+        .replace(
+            /\*\*(.+?)\*\*/g,
+            "<strong>$1</strong>"
+        )
+        .replace(
+            /\*(.+?)\*/g,
+            "<em>$1</em>"
+        );
+}
+
 function adicionarMensagemIA(
     mensagem,
     tipo
@@ -177,6 +275,11 @@ function adicionarMensagemIA(
 
     const isIA =
         tipo === "ia";
+
+    const conteudo =
+        isIA
+            ? renderMarkdown(mensagem)
+            : mensagem;
 
     chat.innerHTML += `
         <div class="
@@ -194,9 +297,9 @@ function adicionarMensagemIA(
 
             </div>
 
-            <div class="ai-msg-bubble">
+            <div class="ai-msg-bubble ${isIA ? "ai-msg-markdown" : ""}">
 
-                ${mensagem}
+                ${conteudo}
 
             </div>
 
@@ -395,6 +498,9 @@ async function perguntarIA(
     const chave =
         obterApiKey();
 
+    if (!chave)
+        throw new Error("Token não configurado.");
+
     const contexto =
         "Você é um assistente financeiro familiar.\n\n" +
         "Pessoas: " +
@@ -408,7 +514,7 @@ async function perguntarIA(
 
     const response =
         await fetch(
-            "https://api.poe.com/bot/GPT-3.5-Turbo",
+            "https://api.poe.com/v1/responses",
             {
                 method: "POST",
 
@@ -421,35 +527,8 @@ async function perguntarIA(
                 },
 
                 body: JSON.stringify({
-
-                    version: "1.0",
-
-                    type: "query",
-
-                    query: [
-                        {
-                            role: "user",
-
-                            content: contexto,
-
-                            content_type:
-                                "text/markdown",
-
-                            timestamp: 0,
-
-                            message_id: "",
-
-                            feedback: [],
-
-                            attachments: []
-                        }
-                    ],
-
-                    user_id: "",
-
-                    conversation_id: "",
-
-                    message_id: ""
+                    model: "gpt-4o-mini",
+                    input: contexto
                 })
             }
         );
@@ -459,91 +538,14 @@ async function perguntarIA(
             `Erro ${response.status}`
         );
 
-    const reader =
-        response.body.getReader();
+    const data =
+        await response.json();
 
-    const decoder =
-        new TextDecoder();
+    const texto =
+        data?.output?.[0]?.content?.[0]?.text ||
+        data?.output_text ||
+        data?.text ||
+        "";
 
-    let fullText = "";
-    let buffer = "";
-
-    while (true) {
-
-        const { done, value } =
-            await reader.read();
-
-        if (done)
-            break;
-
-        buffer +=
-            decoder.decode(
-                value,
-                { stream: true }
-            );
-
-        const parts =
-            buffer.split("\n\n");
-
-        buffer =
-            parts.pop();
-
-        for (const part of parts) {
-
-            const lines =
-                part.split("\n");
-
-            let eventType = "";
-            let eventData = "";
-
-            for (const line of lines) {
-
-                if (line.startsWith(
-                    "event: "
-                )) {
-                    eventType =
-                        line
-                            .slice(7)
-                            .trim();
-                }
-                else if (line.startsWith(
-                    "data: "
-                )) {
-                    eventData =
-                        line
-                            .slice(6)
-                            .trim();
-                }
-            }
-
-            if (!eventData)
-                continue;
-
-            try {
-
-                const parsed =
-                    JSON.parse(
-                        eventData
-                    );
-
-                if (
-                    eventType === "text"
-                ) {
-                    fullText +=
-                        parsed.text || "";
-                }
-                else if (
-                    eventType ===
-                    "replace_response"
-                ) {
-                    fullText =
-                        parsed.text ||
-                        fullText;
-                }
-            }
-            catch {}
-        }
-    }
-
-    return fullText || "Sem resposta.";
+    return texto || "Sem resposta.";
 }
