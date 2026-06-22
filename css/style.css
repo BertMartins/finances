@@ -1139,8 +1139,6 @@ select.input option {
     line-height: 1.7;
 
     font-size: 15px;
-
-    white-space: pre-wrap;
 }
 
 .ai-msg.bot .ai-msg-bubble {
