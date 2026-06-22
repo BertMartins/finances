@@ -17,6 +17,11 @@ function abrirModalContaVariavel(
     const pessoas =
         obterPessoas();
 
+    const hoje =
+        new Date()
+            .toISOString()
+            .slice(0, 10);
+
     abrirModal({
 
         titulo:
@@ -146,11 +151,7 @@ function abrirModalContaVariavel(
                         id="dataContaVariavelModal"
                         type="date"
                         class="input"
-                        value="
-                            ${
-                                conta?.data || ""
-                            }
-                        "
+                        value="${conta?.data || hoje}"
                     />
 
                 </div>

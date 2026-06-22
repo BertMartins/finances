@@ -80,6 +80,21 @@ function salvarChaveIA() {
     );
 }
 
+function preencherPerguntaIA(pergunta) {
+
+    const input =
+        document.getElementById(
+            "inputIA"
+        );
+
+    if (!input)
+        return;
+
+    input.value = pergunta;
+
+    enviarPerguntaIA();
+}
+
 async function enviarPerguntaIA() {
 
     const input =
@@ -380,34 +395,20 @@ async function perguntarIA(
     const chave =
         obterApiKey();
 
-    const contexto = `
-        Você é um assistente
-        financeiro familiar.
-
-        Pessoas:
-        ${JSON.stringify(
-            obterPessoas()
-        )}
-
-        Contas Fixas:
-        ${JSON.stringify(
-            obterContasFixas()
-        )}
-
-        Contas Variáveis:
-        ${JSON.stringify(
-            obterContasVariaveis()
-        )}
-
-        Pergunta:
-        ${pergunta}
-
-        Responda em português.
-    `;
+    const contexto =
+        "Você é um assistente financeiro familiar.\n\n" +
+        "Pessoas: " +
+        JSON.stringify(obterPessoas()) + "\n\n" +
+        "Contas Fixas: " +
+        JSON.stringify(obterContasFixas()) + "\n\n" +
+        "Contas Variáveis: " +
+        JSON.stringify(obterContasVariaveis()) + "\n\n" +
+        "Pergunta: " + pergunta + "\n\n" +
+        "Responda em português de forma clara e objetiva.";
 
     const response =
         await fetch(
-            "https://api.poe.com/v1/responses",
+            "https://api.poe.com/bot/GPT-3.5-Turbo",
             {
                 method: "POST",
 
@@ -421,22 +422,128 @@ async function perguntarIA(
 
                 body: JSON.stringify({
 
-                    model:
-                        "gpt-5.3-codex",
+                    version: "1.0",
 
-                    input:
-                        contexto
+                    type: "query",
+
+                    query: [
+                        {
+                            role: "user",
+
+                            content: contexto,
+
+                            content_type:
+                                "text/markdown",
+
+                            timestamp: 0,
+
+                            message_id: "",
+
+                            feedback: [],
+
+                            attachments: []
+                        }
+                    ],
+
+                    user_id: "",
+
+                    conversation_id: "",
+
+                    message_id: ""
                 })
             }
         );
 
-    const data =
-        await response.json();
+    if (!response.ok)
+        throw new Error(
+            `Erro ${response.status}`
+        );
 
-    return (
-        data.output?.[0]
-            ?.content?.[0]
-            ?.text
-        || "Sem resposta."
-    );
+    const reader =
+        response.body.getReader();
+
+    const decoder =
+        new TextDecoder();
+
+    let fullText = "";
+    let buffer = "";
+
+    while (true) {
+
+        const { done, value } =
+            await reader.read();
+
+        if (done)
+            break;
+
+        buffer +=
+            decoder.decode(
+                value,
+                { stream: true }
+            );
+
+        const parts =
+            buffer.split("\n\n");
+
+        buffer =
+            parts.pop();
+
+        for (const part of parts) {
+
+            const lines =
+                part.split("\n");
+
+            let eventType = "";
+            let eventData = "";
+
+            for (const line of lines) {
+
+                if (line.startsWith(
+                    "event: "
+                )) {
+                    eventType =
+                        line
+                            .slice(7)
+                            .trim();
+                }
+                else if (line.startsWith(
+                    "data: "
+                )) {
+                    eventData =
+                        line
+                            .slice(6)
+                            .trim();
+                }
+            }
+
+            if (!eventData)
+                continue;
+
+            try {
+
+                const parsed =
+                    JSON.parse(
+                        eventData
+                    );
+
+                if (
+                    eventType === "text"
+                ) {
+                    fullText +=
+                        parsed.text || "";
+                }
+                else if (
+                    eventType ===
+                    "replace_response"
+                ) {
+                    fullText =
+                        parsed.text ||
+                        fullText;
+                }
+            }
+            catch {}
+        }
+    }
+
+    return fullText || "Sem resposta.";
 }

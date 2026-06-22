@@ -72,9 +72,16 @@ function renderizarCardsDashboard() {
     );
 
     atualizarTextoElemento(
-        "totalCompartilhado",
+        "totalContasFixas",
         formatarMoeda(
             totalFixas
+        )
+    );
+
+    atualizarTextoElemento(
+        "totalContasVariaveis",
+        formatarMoeda(
+            totalVariaveis
         )
     );
 
@@ -307,7 +314,7 @@ function renderizarUltimasContas() {
 
     const container =
         document.getElementById(
-            "dashboardContas"
+            "dashboardMovimentacoes"
         );
 
     if (!container)

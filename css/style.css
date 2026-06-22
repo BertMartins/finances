@@ -254,6 +254,11 @@ body {
         var(--shadow);
 }
 
+.card-title{
+    margin: 10px 0px;
+    font-size: large;
+}
+
 .metrics-grid {
 
     display: grid;
@@ -562,12 +567,23 @@ body {
         14px 16px;
 
     outline: none;
+
+    color-scheme: dark;
 }
 
 .input:focus {
 
     border-color:
         var(--accent);
+}
+
+select.input option {
+
+    background-color:
+        var(--bg-1);
+
+    color:
+        var(--text-1);
 }
 
 /* PAGE */
@@ -1263,4 +1279,120 @@ body {
 
     transform:
         scale(1.04);
+}
+
+/* MODAL RESPONSIVE */
+
+.modal-overlay {
+
+    padding: 16px;
+}
+
+.modal-body {
+
+    max-height: 65vh;
+
+    overflow-y: auto;
+}
+
+/* MOBILE */
+
+@media(max-width: 600px) {
+
+    html, body {
+
+        font-size: 14px;
+    }
+
+    #app {
+
+        padding: 14px;
+    }
+
+    .card {
+
+        padding: 14px;
+    }
+
+    .metric-value {
+
+        font-size: 22px;
+    }
+
+    .metric-icon {
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 20px;
+    }
+
+    .list-title {
+
+        font-size: 15px;
+    }
+
+    .list-amount {
+
+        font-size: 16px;
+    }
+
+    .btn-icon {
+
+        width: 36px;
+        height: 36px;
+    }
+
+    .modal-box {
+
+        border-radius: 16px;
+    }
+
+    .modal-body {
+
+        max-height: 55vh;
+    }
+
+    .modal-footer {
+
+        flex-wrap: wrap;
+    }
+
+    .btn {
+
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    .ai-empty-icon {
+
+        font-size: 48px;
+    }
+
+    .ai-empty-state h2 {
+
+        font-size: 22px;
+    }
+
+    .ai-input-area input {
+
+        height: 48px;
+        font-size: 14px;
+    }
+
+    .ai-input-area button {
+
+        width: 48px;
+        height: 48px;
+    }
+
+    .person-cards {
+
+        grid-template-columns: 1fr;
+    }
+
+    #main-header {
+
+        height: 60px;
+    }
 }
