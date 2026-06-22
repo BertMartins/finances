@@ -6,6 +6,8 @@ function renderizarDashboard() {
 
     renderizarCardsDashboard();
 
+    renderizarMetas();
+
     renderizarResumoPessoas();
 
     renderizarUltimasContas();
@@ -13,6 +15,8 @@ function renderizarDashboard() {
     renderizarGraficoCategorias();
 
     renderizarGraficoResumo();
+
+    renderizarGraficoAnual();
 }
 
 function renderizarCardsDashboard() {
@@ -312,6 +316,219 @@ function renderizarResumoPessoas() {
             `;
         }
     );
+}
+
+function renderizarMetas() {
+
+    const container =
+        document.getElementById(
+            "dashboardMetas"
+        );
+
+    const secao =
+        document.getElementById(
+            "secaoMetas"
+        );
+
+    if (!container)
+        return;
+
+    const metas = obterMetas();
+
+    if (metas.length === 0) {
+
+        if (secao)
+            secao.style.display = "none";
+
+        return;
+    }
+
+    if (secao)
+        secao.style.display = "";
+
+    const pessoas =
+        obterPessoas();
+
+    const totalSalarios =
+        pessoas.reduce(
+            (t, p) =>
+                t + Number(p.salario || 0),
+            0
+        );
+
+    const totalFixas =
+        obterContasFixasMes(
+            appState.mesAtual
+        ).reduce(
+            (t, c) =>
+                t + Number(c.valor || 0),
+            0
+        );
+
+    const totalVariaveis =
+        obterContasVariaveisMes(
+            appState.mesAtual
+        ).reduce(
+            (t, c) =>
+                t + Number(c.valorParcela || 0),
+            0
+        );
+
+    const sobra =
+        Math.max(
+            0,
+            totalSalarios -
+            totalFixas -
+            totalVariaveis
+        );
+
+    const metasAuto =
+        metas.filter(
+            m => !m.contribuicaoMensal
+        );
+
+    const contribuicaoAutoValor =
+        metasAuto.length > 0
+            ? sobra / metasAuto.length
+            : 0;
+
+    container.innerHTML = metas
+        .map(meta => {
+
+            const contribuicao =
+                meta.contribuicaoMensal ||
+                contribuicaoAutoValor;
+
+            const faltando =
+                Math.max(
+                    0,
+                    meta.valorAlvo -
+                    meta.valorAtual
+                );
+
+            const pct =
+                Math.min(
+                    100,
+                    Math.round(
+                        (meta.valorAtual /
+                        meta.valorAlvo) *
+                        100
+                    )
+                );
+
+            const mesesRestantes =
+                contribuicao > 0
+                    ? Math.ceil(
+                        faltando / contribuicao
+                      )
+                    : null;
+
+            const dataConclusao =
+                mesesRestantes !== null
+                    ? adicionarMeses(
+                        appState.mesAtual,
+                        mesesRestantes
+                      )
+                    : null;
+
+            const cor =
+                meta.cor || "#10b981";
+
+            const isAuto =
+                !meta.contribuicaoMensal;
+
+            const concluida =
+                meta.valorAtual >=
+                meta.valorAlvo;
+
+            return `
+                <div class="card meta-dash-card">
+
+                    <div class="meta-dash-top">
+
+                        <div
+                            class="meta-dash-emoji"
+                            style="background:${cor}22; color:${cor};">
+                            ${escaparHtml(
+                                meta.emoji || "🎯"
+                            )}
+                        </div>
+
+                        <div class="meta-dash-info">
+
+                            <div class="meta-dash-nome">
+                                ${escaparHtml(
+                                    meta.nome
+                                )}
+                            </div>
+
+                            <div class="meta-dash-valores">
+                                <span style="color:${cor}; font-weight:700;">
+                                    ${formatarMoeda(
+                                        meta.valorAtual
+                                    )}
+                                </span>
+                                <span class="text-muted">
+                                    / ${formatarMoeda(
+                                        meta.valorAlvo
+                                    )}
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="meta-dash-pct"
+                            style="color:${cor};">
+                            ${pct}%
+                        </div>
+
+                    </div>
+
+                    <div class="meta-dash-track">
+                        <div
+                            class="meta-dash-bar"
+                            style="width:${pct}%; background:${cor};">
+                        </div>
+                    </div>
+
+                    <div class="meta-dash-stats">
+
+                        <div class="meta-stat-item">
+                            <span class="meta-stat-label">
+                                Guardar/mês
+                            </span>
+                            <span class="meta-stat-val">
+                                ${formatarMoeda(
+                                    contribuicao
+                                )}
+                                ${isAuto
+                                    ? `<span class="meta-auto-badge">auto</span>`
+                                    : ""
+                                }
+                            </span>
+                        </div>
+
+                        <div class="meta-stat-item">
+                            <span class="meta-stat-label">
+                                Conclusão
+                            </span>
+                            <span class="meta-stat-val">
+                                ${concluida
+                                    ? `<span style="color:#10b981;">✅ Concluída!</span>`
+                                    : dataConclusao
+                                        ? formatarMesAno(dataConclusao)
+                                        : `<span class="text-muted">—</span>`
+                                }
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+            `;
+        })
+        .join("");
 }
 
 function renderizarUltimasContas() {

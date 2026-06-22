@@ -234,6 +234,245 @@ function renderizarGraficoResumo() {
         );
 }
 
+function renderizarGraficoAnual() {
+
+    const canvas =
+        document.getElementById(
+            "graficoAnual"
+        );
+
+    if (!canvas)
+        return;
+
+    if (appState.charts.anual) {
+
+        appState.charts.anual.destroy();
+
+        appState.charts.anual = null;
+    }
+
+    const anoAtual =
+        appState.mesAtual.split("-")[0];
+
+    const meses =
+        Array.from(
+            { length: 12 },
+            (_, i) =>
+                `${anoAtual}-${
+                    String(i + 1)
+                        .padStart(2, "0")
+                }`
+        );
+
+    const pessoas =
+        obterPessoas();
+
+    const totalSalarios =
+        pessoas.reduce(
+            (t, p) =>
+                t + Number(p.salario || 0),
+            0
+        );
+
+    const gastosPorMes =
+        meses.map(mes => {
+
+            const fixas =
+                obterContasFixasMes(mes)
+                    .reduce(
+                        (t, c) =>
+                            t + Number(
+                                c.valor || 0
+                            ),
+                        0
+                    );
+
+            const variaveis =
+                obterContasVariaveisMes(mes)
+                    .reduce(
+                        (t, c) =>
+                            t + Number(
+                                c.valorParcela || 0
+                            ),
+                        0
+                    );
+
+            return fixas + variaveis;
+        });
+
+    const sobraPorMes =
+        gastosPorMes.map(
+            g => totalSalarios - g
+        );
+
+    const labels = [
+        "Jan", "Fev", "Mar", "Abr",
+        "Mai", "Jun", "Jul", "Ago",
+        "Set", "Out", "Nov", "Dez"
+    ];
+
+    const isDark = true;
+
+    const gridColor =
+        "rgba(255,255,255,0.06)";
+
+    const tickColor =
+        "#64748b";
+
+    appState.charts.anual =
+        new Chart(canvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels,
+
+                datasets: [
+                    {
+                        label: "Salários",
+
+                        data: meses.map(
+                            () => totalSalarios
+                        ),
+
+                        backgroundColor:
+                            "rgba(16,185,129,0.25)",
+
+                        borderColor:
+                            "#10b981",
+
+                        borderWidth: 2,
+
+                        borderRadius: 6,
+
+                        type: "line",
+
+                        fill: false,
+
+                        tension: 0,
+
+                        pointRadius: 3,
+
+                        pointBackgroundColor:
+                            "#10b981",
+
+                        order: 0
+                    },
+                    {
+                        label: "Gastos",
+
+                        data: gastosPorMes,
+
+                        backgroundColor:
+                            "rgba(239,68,68,0.6)",
+
+                        borderColor:
+                            "#ef4444",
+
+                        borderWidth: 0,
+
+                        borderRadius: 6,
+
+                        order: 1
+                    },
+                    {
+                        label: "Sobra",
+
+                        data: sobraPorMes,
+
+                        backgroundColor:
+                            "rgba(6,182,212,0.6)",
+
+                        borderColor:
+                            "#06b6d4",
+
+                        borderWidth: 0,
+
+                        borderRadius: 6,
+
+                        order: 2
+                    }
+                ]
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                interaction: {
+
+                    mode: "index",
+
+                    intersect: false
+                },
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: tickColor,
+
+                            usePointStyle: true,
+
+                            padding: 16
+                        }
+                    },
+
+                    tooltip: {
+
+                        callbacks: {
+
+                            label: ctx =>
+                                ` ${ctx.dataset.label}: ${
+                                    formatarMoeda(ctx.raw)
+                                }`
+                        }
+                    }
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+                            color: gridColor
+                        },
+
+                        ticks: {
+                            color: tickColor
+                        }
+                    },
+
+                    y: {
+
+                        grid: {
+                            color: gridColor
+                        },
+
+                        ticks: {
+
+                            color: tickColor,
+
+                            callback: v =>
+                                "R$ " +
+                                Number(v)
+                                    .toLocaleString(
+                                        "pt-BR"
+                                    )
+                        }
+                    }
+                }
+            }
+        });
+}
+
 function obterContasFixasMes(
     mes
 ) {

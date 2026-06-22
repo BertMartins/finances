@@ -2070,3 +2070,485 @@ select.input option {
 
     font-size: 13px;
 }
+
+/* =============================
+   METAS — PERFIL
+   ============================= */
+
+.mt-20 {
+
+    margin-top: 24px;
+}
+
+.perfil-metas-card {
+
+    padding: 24px;
+}
+
+.perfil-metas-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 20px;
+}
+
+.perfil-metas-title-group {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+}
+
+.perfil-metas-lista {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.perfil-metas-vazio {
+
+    text-align: center;
+
+    padding: 32px 16px;
+
+    color: var(--text-2);
+
+    font-size: 14px;
+}
+
+.perfil-meta-item {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding: 16px;
+
+    background: rgba(255,255,255,.03);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    flex-wrap: wrap;
+}
+
+.perfil-meta-item-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.perfil-meta-emoji {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+.perfil-meta-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.perfil-meta-nome {
+
+    font-weight: 600;
+
+    font-size: 14px;
+
+    margin-bottom: 6px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.perfil-meta-prog-track {
+
+    height: 6px;
+
+    background: rgba(255,255,255,.08);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    margin-bottom: 6px;
+}
+
+.perfil-meta-prog-bar {
+
+    height: 100%;
+
+    border-radius: 10px;
+
+    transition: width .4s ease;
+}
+
+.perfil-meta-valores {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    font-size: 12px;
+
+    align-items: center;
+}
+
+.perfil-meta-pct {
+
+    font-weight: 700;
+
+    font-size: 12px;
+
+    padding: 1px 6px;
+
+    border-radius: 6px;
+
+    background: rgba(255,255,255,.06);
+}
+
+.perfil-meta-acoes {
+
+    display: flex;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+/* FORM */
+
+.perfil-form-row {
+
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+.perfil-form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.form-label {
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color: var(--text-2);
+}
+
+/* COR CHIPS */
+
+.meta-cor-chips {
+
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.meta-cor-chip {
+
+    width: 32px;
+
+    height: 32px;
+
+    border-radius: 50%;
+
+    border: 3px solid transparent;
+
+    cursor: pointer;
+
+    transition: transform .15s, border-color .15s;
+}
+
+.meta-cor-chip:hover {
+
+    transform: scale(1.15);
+}
+
+.meta-cor-chip.selecionada {
+
+    border-color: #fff;
+
+    transform: scale(1.15);
+}
+
+/* =============================
+   METAS — DASHBOARD
+   ============================= */
+
+.metas-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(280px, 1fr)
+        );
+
+    gap: 16px;
+
+    margin-top: 12px;
+}
+
+.meta-dash-card {
+
+    padding: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.meta-dash-top {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.meta-dash-emoji {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+.meta-dash-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.meta-dash-nome {
+
+    font-weight: 600;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.meta-dash-valores {
+
+    font-size: 13px;
+
+    margin-top: 2px;
+}
+
+.meta-dash-pct {
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    flex-shrink: 0;
+}
+
+.meta-dash-track {
+
+    height: 8px;
+
+    background: rgba(255,255,255,.08);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.meta-dash-bar {
+
+    height: 100%;
+
+    border-radius: 10px;
+
+    transition: width .5s ease;
+}
+
+.meta-dash-stats {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+.meta-stat-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.meta-stat-label {
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+
+    color: var(--text-2);
+}
+
+.meta-stat-val {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+}
+
+.meta-auto-badge {
+
+    font-size: 10px;
+
+    padding: 1px 6px;
+
+    border-radius: 20px;
+
+    background: rgba(245,158,11,.15);
+
+    color: #f59e0b;
+
+    font-weight: 500;
+}
+
+/* GRÁFICO ANUAL */
+
+.chart-container-anual {
+
+    height: 320px;
+}
+
+/* =============================
+   RESPONSIVE — METAS
+   ============================= */
+
+@media (max-width: 640px) {
+
+    .metas-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .perfil-meta-item {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .perfil-meta-acoes {
+
+        align-self: flex-end;
+    }
+
+    .perfil-metas-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .chart-container-anual {
+
+        height: 240px;
+    }
+
+    .meta-dash-pct {
+
+        font-size: 18px;
+    }
+}

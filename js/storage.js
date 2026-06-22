@@ -15,7 +15,10 @@ const STORAGE_KEYS = {
         "financas_configuracoes",
 
     apiKey:
-        "financas_poe_api_key"
+        "financas_poe_api_key",
+
+    metas:
+        "financas_metas"
 };
 
 function iniciarStorage() {
@@ -49,6 +52,13 @@ function iniciarStorage() {
                 STORAGE_KEYS.apiKey
             ) {
                 return;
+            }
+
+            if (
+                chave ===
+                STORAGE_KEYS.metas
+            ) {
+                valorInicial = [];
             }
 
             localStorage.setItem(
@@ -169,6 +179,28 @@ function salvarConfiguracoes(
 }
 
 //
+// METAS
+//
+
+function obterMetas() {
+
+    return parseSeguro(
+        localStorage.getItem(
+            STORAGE_KEYS.metas
+        ),
+        []
+    );
+}
+
+function salvarMetas(lista) {
+
+    localStorage.setItem(
+        STORAGE_KEYS.metas,
+        JSON.stringify(lista)
+    );
+}
+
+//
 // API KEY
 //
 
@@ -211,7 +243,10 @@ function exportarDados() {
             obterContasVariaveis(),
 
         configuracoes:
-            obterConfiguracoes()
+            obterConfiguracoes(),
+
+        metas:
+            obterMetas()
     };
 
     const blob =
@@ -296,6 +331,15 @@ function importarDados(
 
         salvarConfiguracoes(
             dados.configuracoes
+        );
+    }
+
+    if (
+        dados.metas
+    ) {
+
+        salvarMetas(
+            dados.metas
         );
     }
 
