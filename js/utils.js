@@ -124,6 +124,18 @@ function obterContasFixasMes(
         });
 }
 
+function adicionarMeses(mesAno, n) {
+
+    const [ano, mes] =
+        mesAno.split("-").map(Number);
+
+    const data = new Date(ano, mes - 1);
+
+    data.setMonth(data.getMonth() + n);
+
+    return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, "0")}`;
+}
+
 function obterContasVariaveisMes(
     mes
 ) {
@@ -134,8 +146,27 @@ function obterContasVariaveisMes(
             if (!conta.data)
                 return false;
 
-            return conta.data
-                .startsWith(mes);
+            const inicio =
+                conta.data.slice(0, 7);
+
+            if (
+                conta.parcelas &&
+                conta.parcelas > 1
+            ) {
+
+                const fim =
+                    adicionarMeses(
+                        inicio,
+                        conta.parcelas - 1
+                    );
+
+                return (
+                    mes >= inicio &&
+                    mes <= fim
+                );
+            }
+
+            return inicio === mes;
         });
 }
 

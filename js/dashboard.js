@@ -9,6 +9,10 @@ function renderizarDashboard() {
     renderizarResumoPessoas();
 
     renderizarUltimasContas();
+
+    renderizarGraficoCategorias();
+
+    renderizarGraficoResumo();
 }
 
 function renderizarCardsDashboard() {
