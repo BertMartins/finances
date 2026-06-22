@@ -13,7 +13,10 @@ const ROTAS = {
         "pages/contas-variaveis.html",
 
     assistente:
-        "pages/assistente.html"
+        "pages/assistente.html",
+
+    perfil:
+        "pages/perfil.html"
 };
 
 async function navegarPara(
@@ -80,6 +83,12 @@ function inicializarPagina(
         case "assistente":
 
             inicializarAssistente();
+
+            break;
+
+        case "perfil":
+
+            renderizarPerfil();
 
             break;
     }

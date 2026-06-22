@@ -1479,3 +1479,596 @@ select.input option {
         height: 60px;
     }
 }
+
+/* =============================
+   MONTH SELECTOR
+   ============================= */
+
+.month-selector {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.month-selector button {
+
+    background: none;
+
+    border: none;
+
+    color: var(--text-2);
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    padding: 4px 8px;
+
+    border-radius: 8px;
+
+    transition: background .15s, color .15s;
+}
+
+.month-selector button:hover {
+
+    background: rgba(255,255,255,.08);
+
+    color: var(--text-1);
+}
+
+.month-label {
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: var(--text-1);
+
+    min-width: 160px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    padding: 6px 14px;
+
+    border-radius: 10px;
+
+    background: none;
+
+    border: 1px solid transparent;
+
+    transition: background .15s, border-color .15s;
+}
+
+.month-label:hover {
+
+    background: rgba(255,255,255,.06);
+
+    border-color: var(--border);
+}
+
+/* MÊS PICKER */
+
+.mes-picker {
+
+    position: fixed;
+
+    transform: translateX(-50%);
+
+    z-index: 9999;
+
+    background: var(--bg-1);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 16px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.5);
+
+    width: 240px;
+
+    animation: pickerIn .12s ease;
+}
+
+@keyframes pickerIn {
+
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.picker-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+}
+
+.picker-ano {
+
+    font-weight: 700;
+
+    font-size: 16px;
+}
+
+.picker-nav {
+
+    background: none;
+
+    border: none;
+
+    color: var(--text-2);
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition: background .15s, color .15s;
+}
+
+.picker-nav:hover {
+
+    background: rgba(255,255,255,.08);
+
+    color: var(--text-1);
+}
+
+.picker-meses {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 6px;
+}
+
+.picker-mes-btn {
+
+    background: none;
+
+    border: 1px solid transparent;
+
+    border-radius: 10px;
+
+    color: var(--text-1);
+
+    font-size: 13px;
+
+    padding: 8px 0;
+
+    cursor: pointer;
+
+    transition: background .15s, border-color .15s, color .15s;
+
+    text-align: center;
+}
+
+.picker-mes-btn:hover {
+
+    background: rgba(255,255,255,.08);
+
+    border-color: var(--border);
+}
+
+.picker-mes-btn.ativo {
+
+    background: var(--accent);
+
+    border-color: var(--accent);
+
+    color: #fff;
+
+    font-weight: 600;
+}
+
+/* =============================
+   SIDEBAR BOTTOM
+   ============================= */
+
+.sidebar-bottom {
+
+    margin-top: auto;
+
+    padding-top: 16px;
+
+    border-top: 1px solid var(--border);
+}
+
+.nav-item-perfil {
+
+    width: 100%;
+
+    opacity: .75;
+}
+
+.nav-item-perfil:hover,
+.nav-item-perfil.active {
+
+    opacity: 1;
+}
+
+/* =============================
+   PERFIL PAGE
+   ============================= */
+
+.page-header {
+
+    margin-bottom: 28px;
+}
+
+.page-title {
+
+    font-size: 22px;
+
+    font-weight: 700;
+}
+
+.perfil-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(300px, 1fr)
+        );
+
+    gap: 20px;
+}
+
+.perfil-card {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+    padding: 24px;
+}
+
+.perfil-card-icon {
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+
+    flex-shrink: 0;
+}
+
+.perfil-card-body {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.perfil-card-title {
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+.perfil-card-desc {
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.perfil-info-box {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding: 12px;
+
+    background: rgba(255,255,255,.04);
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+}
+
+.perfil-info-label {
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+
+    color: var(--text-2);
+}
+
+.perfil-info-tags {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+}
+
+.tag {
+
+    font-size: 12px;
+
+    padding: 3px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(16,185,129,.12);
+
+    color: var(--accent);
+
+    border: 1px solid rgba(16,185,129,.25);
+}
+
+.perfil-btn {
+
+    width: 100%;
+
+    justify-content: center;
+}
+
+/* DROP ZONE */
+
+.perfil-drop-zone {
+
+    border: 2px dashed rgba(59,130,246,.4);
+
+    border-radius: 12px;
+
+    padding: 24px 16px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 8px;
+
+    transition: background .15s, border-color .15s;
+}
+
+.perfil-drop-zone:hover,
+.perfil-drop-zone.drag-over {
+
+    background: rgba(59,130,246,.08);
+
+    border-color: var(--blue);
+}
+
+.perfil-drop-icon {
+
+    font-size: 28px;
+}
+
+.perfil-drop-text {
+
+    font-size: 13px;
+
+    color: var(--text-2);
+}
+
+/* TOKEN INPUT */
+
+.perfil-input-group {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+}
+
+.perfil-input-group .input {
+
+    flex: 1;
+
+    padding-right: 44px;
+}
+
+.perfil-toggle-visibility {
+
+    position: absolute;
+
+    right: 10px;
+
+    background: none;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    opacity: .6;
+
+    transition: opacity .15s;
+
+    line-height: 1;
+}
+
+.perfil-toggle-visibility:hover {
+
+    opacity: 1;
+}
+
+/* STATUS TOKEN */
+
+.perfil-token-status {
+
+    min-height: 24px;
+}
+
+.perfil-status {
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    padding: 6px 12px;
+
+    border-radius: 8px;
+
+    display: inline-block;
+}
+
+.perfil-status.ok {
+
+    background: rgba(16,185,129,.12);
+
+    color: var(--accent);
+}
+
+.perfil-status.warn {
+
+    background: rgba(239,68,68,.10);
+
+    color: var(--danger);
+}
+
+/* BTN ROW */
+
+.perfil-btn-row {
+
+    display: flex;
+
+    gap: 10px;
+}
+
+.perfil-btn-flex {
+
+    flex: 1;
+
+    justify-content: center;
+}
+
+/* IMPORT RESUMO */
+
+.perfil-import-resumo {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    padding: 12px;
+
+    background: rgba(255,255,255,.04);
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    font-size: 14px;
+}
+
+.perfil-import-label {
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+
+    color: var(--text-2);
+}
+
+.perfil-card-danger {
+
+    border-color: rgba(239,68,68,.25);
+}
+
+.perfil-danger-aviso {
+
+    font-size: 13px;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    background: rgba(239,68,68,.10);
+
+    color: #fca5a5;
+
+    border: 1px solid rgba(239,68,68,.25);
+}
+
+.perfil-btn-danger {
+
+    background: rgba(239,68,68,.15);
+
+    border: 1px solid rgba(239,68,68,.4);
+
+    color: var(--danger);
+
+    transition: background .15s, border-color .15s;
+}
+
+.perfil-btn-danger:hover {
+
+    background: var(--danger);
+
+    border-color: var(--danger);
+
+    color: #fff;
+}
+
+.perfil-import-resumo > span {
+
+    display: block;
+
+    padding: 2px 0;
+
+    font-size: 13px;
+}

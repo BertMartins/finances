@@ -131,6 +131,23 @@
 
         </nav>
 
+        <div class="sidebar-bottom">
+
+            <button
+                data-menu="perfil"
+                class="nav-item nav-item-perfil"
+                onclick="
+                    navegarPara(
+                        'perfil'
+                    )
+                ">
+
+                ⚙️ Perfil
+
+            </button>
+
+        </div>
+
     </aside>
 
     <main id="main">
@@ -156,11 +173,13 @@
 
                 </button>
 
-                <span
+                <button
                     id="mesAtualTexto"
-                    class="month-label">
+                    class="month-label"
+                    onclick="abrirPickerMes()"
+                    title="Selecionar mês">
 
-                </span>
+                </button>
 
                 <button
                     onclick="
@@ -255,6 +274,8 @@
     <script src="js/dashboard.js"></script>
 
     <script src="js/assistente.js"></script>
+
+    <script src="js/perfil.js"></script>
 
 </body>
 
